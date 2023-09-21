@@ -1,10 +1,10 @@
-package com.portra.mvp;
+package com.portaexperiencia.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MvpApplicationTests {
+class BackendApplicationTests {
 
 
 
