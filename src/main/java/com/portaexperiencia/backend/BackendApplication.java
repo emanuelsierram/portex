@@ -1,13 +1,13 @@
-package com.portra.mvp;
+package com.portaexperiencia.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MvpApplication {
+public class BackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MvpApplication.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }
