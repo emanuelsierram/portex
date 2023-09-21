@@ -1,4 +1,4 @@
-package com.portra.mvp.infraestructura.configuracion;
+package com.portaexperiencia.backend.configuracion;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
