@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+}
+
+group = 'portaexperiencia'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+

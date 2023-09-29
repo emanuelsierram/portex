@@ -1,4 +1,5 @@
 -- MySQL Workbench Forward Engineering
+
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
@@ -24,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`Clientes` (
   `direccion` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `ciudad` VARCHAR(45) NOT NULL,
+  `barrio` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id_cliente`))
 ENGINE = InnoDB;
 
@@ -47,15 +49,39 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `portafolio`.`Imagenes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `portafolio`.`Imagenes` (
+  `id_imagenes` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NOT NULL,
+  `formato` VARCHAR(45) NOT NULL,
+  `ruta` VARCHAR(45) NOT NULL,
+  `servicio_id_fk` INT NOT NULL,
+  PRIMARY KEY (`id_imagenes`, `servicio_id_fk`),
+  INDEX `fk_Imagenes_Servicios1_idx` (`servicio_id_fk` ASC) VISIBLE,
+  CONSTRAINT `fk_Imagenes_Servicios1`
+    FOREIGN KEY (`servicio_id_fk`)
+    REFERENCES `portafolio`.`Servicios` (`id_servicio`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `portafolio`.`Categoria`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `portafolio`.`Categoria` (
   `id_categoria` INT NOT NULL AUTO_INCREMENT,
   `nombre_categoria` VARCHAR(45) NOT NULL,
   `descripcion_categoria` VARCHAR(45) NOT NULL,
-  `ruta` VARCHAR(45) NOT NULL,
+  `icono_id_imagenes_fk` INT NOT NULL,
   PRIMARY KEY (`id_categoria`),
-  UNIQUE INDEX `ruta_UNIQUE` (`ruta` ASC) VISIBLE)
+  INDEX `fk_Categoria_Imagenes1_idx` (`icono_id_imagenes_fk` ASC) VISIBLE,
+  CONSTRAINT `fk_Categoria_Imagenes1`
+    FOREIGN KEY (`icono_id_imagenes_fk`)
+    REFERENCES `portafolio`.`Imagenes` (`id_imagenes`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -143,25 +169,6 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`Pedidos` (
   CONSTRAINT `fk_Pedidos_Traza1`
     FOREIGN KEY (`traza_id_fk`)
     REFERENCES `portafolio`.`Traza` (`id_traza`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `portafolio`.`Imagenes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `portafolio`.`Imagenes` (
-  `id_imagenes` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL,
-  `formato` VARCHAR(45) NOT NULL,
-  `ruta` VARCHAR(45) NOT NULL,
-  `servicio_id_fk` INT NOT NULL,
-  PRIMARY KEY (`id_imagenes`, `servicio_id_fk`),
-  INDEX `fk_Imagenes_Servicios1_idx` (`servicio_id_fk` ASC) VISIBLE,
-  CONSTRAINT `fk_Imagenes_Servicios1`
-    FOREIGN KEY (`servicio_id_fk`)
-    REFERENCES `portafolio`.`Servicios` (`id_servicio`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
