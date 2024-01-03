@@ -4,6 +4,7 @@ import com.portaexperiencia.backend.dominio.modelo.dto.DtoPedido;
 import com.portaexperiencia.backend.dominio.modelo.entidad.Pedido;
 import com.portaexperiencia.backend.dominio.puerto.repositorio.RepositorioPedido;
 import com.portaexperiencia.dominio.excepcion.ExcepcionDuplicidad;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +19,8 @@ public class ServicioCrearPedido {
         this.repositorioPedido = repositorioPedido;
     }
 
+
+    @Transactional
     public Long ejecutar(Pedido pedido){
         validarExistenciaPrevia(pedido);
         return this.repositorioPedido.crear(pedido);
