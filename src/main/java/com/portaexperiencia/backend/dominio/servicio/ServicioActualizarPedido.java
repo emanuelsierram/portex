@@ -12,8 +12,10 @@ public class ServicioActualizarPedido {
         this.repositorioPedido = repositorioPedido;
     }
 
-    public void ejecutar(Pedido pedido){
-        pedido.validarFechaAplazo(pedido.getFechaInicio());
+
+
+    public void apalazarFecha(Pedido pedido){
+        pedido.validarFechaAplazado(pedido.getFechaInicio());
         this.repositorioPedido.actualizar(pedido);
 
     }
