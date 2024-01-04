@@ -10,7 +10,7 @@ import java.util.List;
 @Component
 public class DaoTrabajadorMysql implements DaoTrabajador {
 
-    private static String sqlListar = "SELECT nombres, apellidos, profesion FROM trabajadores WHERE estado = 'activo'";
+    private static String sqlListar = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servico FROM trabajadores WHERE estado = 'activo'";
     private static String sqlConsultarTrabajadorPorCedula = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servico FROM trabajadores WHERE cedula = :cedula";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
@@ -21,7 +21,7 @@ public class DaoTrabajadorMysql implements DaoTrabajador {
 
     @Override
     public List<DtoTrabajador> listar() {
-        return customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().query(sqlListar, new MapeoTrabajadorLista());
+        return customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().query(sqlListar, new MapeoTrabajador());
     }
 
     @Override
