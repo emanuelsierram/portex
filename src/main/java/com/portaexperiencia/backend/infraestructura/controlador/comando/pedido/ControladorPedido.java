@@ -1,4 +1,4 @@
-package com.portaexperiencia.backend.infraestructura.controlador;
+package com.portaexperiencia.backend.infraestructura.controlador.comando.pedido;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;

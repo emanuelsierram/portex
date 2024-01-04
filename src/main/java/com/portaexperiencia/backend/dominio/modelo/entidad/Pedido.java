@@ -83,15 +83,6 @@ public class Pedido {
         }
     }
 
-  /*  private void validarDuracionMinima() {
-        int dias= (int) DAYS.between(this.fechaInicio, this.fechaFinal);
-        if(dias<=DURACION_MAXIMA_PEDIDO) {
-            throw new ExcepcionValorInvalido(DURACION_MAXIMA_DE_UN_MES);
-        }
-    }*/
-
-
-
     public void validarFechaAplazado(LocalDateTime nuevaFecha){
         validarMenorFecha(this.fechaInicio,nuevaFecha,FECHA_INCORRECTA_APLAZADO);
         Period periodo = Period.between(
