@@ -18,7 +18,7 @@ public class MapeoTrabajador implements RowMapper<DtoTrabajador> {
          String cedula = rs.getString("cedula");
          String profesion = rs.getString("profesion");
          String estado = rs.getString("estado");
-         String estadoServicio = rs.getString("estado_servico");
+         String estadoServicio = rs.getString("estado_servicio");
         return new DtoTrabajador(id,nombres,apellidos,telefono,email,cedula,profesion,estado,estadoServicio);
     }
 }

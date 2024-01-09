@@ -1,5 +1,6 @@
 package com.portaexperiencia.backend.infraestructura.adaptador.dao;
 
+import com.portaexperiencia.backend.dominio.modelo.dto.DtoServicio;
 import com.portaexperiencia.backend.dominio.modelo.dto.DtoTrabajador;
 import com.portaexperiencia.backend.dominio.puerto.dao.DaoTrabajador;
 import com.portaexperiencia.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
@@ -10,8 +11,8 @@ import java.util.List;
 @Component
 public class DaoTrabajadorMysql implements DaoTrabajador {
 
-    private static String sqlListar = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servico FROM trabajadores WHERE estado = 'activo'";
-    private static String sqlConsultarTrabajadorPorCedula = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servico FROM trabajadores WHERE cedula = :cedula";
+    private static String sqlListar = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio FROM trabajadores WHERE estado = 'activo'";
+    private static String sqlConsultarTrabajadorPorCedula = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio FROM trabajadores WHERE cedula = :cedula";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
@@ -29,5 +30,10 @@ public class DaoTrabajadorMysql implements DaoTrabajador {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("cedula", cedula);
         return customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlConsultarTrabajadorPorCedula,paramSource, new MapeoTrabajador());
+    }
+
+    @Override
+    public DtoServicio consultarServicioPorCedulaTrabajador(String cedula) {
+        return null;
     }
 }
