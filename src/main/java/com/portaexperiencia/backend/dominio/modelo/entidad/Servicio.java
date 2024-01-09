@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class Servicio {
 
+    private Long id;
     private String nombre;
     private String descripcion;
     private Long idCategoria;

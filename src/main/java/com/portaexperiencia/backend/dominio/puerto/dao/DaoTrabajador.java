@@ -11,8 +11,5 @@ public interface DaoTrabajador {
 
     DtoTrabajador consultarPorCedulaTrabajador(String cedula);
 
-    DtoServicio consultarServicioPorCedulaTrabajador(String cedula);
-
-
-
+    List<DtoServicio>  consultarServiciosPorTrabajador(Long idTrabajador);
 }

@@ -1,13 +1,11 @@
 package com.portaexperiencia.backend.infraestructura.controlador.consulta.trabajador;
 
 
+import com.portaexperiencia.backend.dominio.modelo.dto.DtoServicio;
 import com.portaexperiencia.backend.dominio.modelo.dto.DtoTrabajador;
 import com.portaexperiencia.backend.dominio.puerto.dao.DaoTrabajador;
 import com.portaexperiencia.backend.infraestructura.controlador.consulta.ManejadorListarTrabajadores;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,10 +24,17 @@ public class ControladorTrabajador {
     return this.manejadorListarTrabajadores.ejecutar();
    }
 
-    @GetMapping("/{cedula}")
-    public DtoTrabajador consultarPorCedulaTrabajador(@PathVariable String cedula) {
+    @GetMapping("/datos")
+    public DtoTrabajador consultarPorCedulaTrabajador(@RequestParam("cedula") String cedula) {
         return this.manejadorListarTrabajadores.ejecutar(cedula);
     }
+
+    @GetMapping("/{id}/servicios")
+    public List<DtoServicio> consultarServiciosPorTrabajador(@PathVariable Long id) {
+        return this.manejadorListarTrabajadores.ejecutar(id);
+    }
+
+
 
 
 
