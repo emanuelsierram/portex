@@ -24,7 +24,7 @@ public class ControladorTrabajador {
     return this.manejadorListarTrabajadores.ejecutar();
    }
 
-    @GetMapping("/datos")
+    @GetMapping("/perfil")
     public DtoTrabajador consultarPorCedulaTrabajador(@RequestParam("cedula") String cedula) {
         return this.manejadorListarTrabajadores.ejecutar(cedula);
     }
