@@ -1,4 +1,4 @@
-package com.portaexperiencia.backend.infraestructura.adaptador.dao;
+package com.portaexperiencia.backend.infraestructura.adaptador.dao.trabajador;
 
 import com.portaexperiencia.backend.dominio.modelo.dto.DtoServicio;
 import com.portaexperiencia.backend.dominio.modelo.dto.DtoTrabajador;
