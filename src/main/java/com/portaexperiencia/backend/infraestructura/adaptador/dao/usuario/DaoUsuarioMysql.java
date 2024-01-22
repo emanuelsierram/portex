@@ -1,7 +1,7 @@
 package com.portaexperiencia.backend.infraestructura.adaptador.dao.usuario;
 
-import com.portaexperiencia.backend.dominio.modelo.dto.Rol;
-import com.portaexperiencia.backend.dominio.modelo.dto.Usuario;
+import com.portaexperiencia.backend.dominio.modelo.dto.DtoRol;
+import com.portaexperiencia.backend.dominio.modelo.dto.DtoUsuario;
 import com.portaexperiencia.backend.dominio.puerto.dao.DaoUsuario;
 import com.portaexperiencia.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -22,7 +22,7 @@ public class DaoUsuarioMysql implements DaoUsuario {
     }
     
     @Override
-    public Usuario consultarUsuarioPorId(String usuario) {
+    public DtoUsuario consultarUsuarioPorId(String usuario) {
         MapSqlParameterSource paramSource = new MapSqlParameterSource();
         paramSource.addValue("usuario", usuario);
 
@@ -30,7 +30,7 @@ public class DaoUsuarioMysql implements DaoUsuario {
     }
 
     @Override
-    public List<Rol> consultarRolesUsuarios(String usuario) {
+    public List<DtoRol> consultarRolesUsuarios(String usuario) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("usuario", usuario);
 

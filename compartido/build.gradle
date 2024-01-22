@@ -11,4 +11,6 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.2.1.RELEASE'
+    implementation 'com.auth0:java-jwt:4.3.0'
+
 }

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Usuario {
+public class DtoUsuario {
 
         private String usuario;
         private String contrasena;
