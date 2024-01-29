@@ -29,7 +29,7 @@ public class ServicioSeguridadUsuario implements UserDetailsService {
            return User.builder()
                    .username(usuario.getUsuario())
                    .password(usuario.getContrasena())
-                   .roles("ADMIN")
+                   .roles(roles)
                    .accountLocked(usuario.getEstaBloqueado())
                    .disabled(usuario.getEstaDesabilitado())
                    .build();
