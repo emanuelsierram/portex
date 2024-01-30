@@ -1,4 +1,4 @@
-package com.portaexperiencia.backend.dominio.configuration;
+package com.portaexperiencia.backend.dominio.configuracion;
 
 import com.portaexperiencia.backend.dominio.puerto.repositorio.RepositorioPedido;
 import com.portaexperiencia.backend.dominio.servicio.ServicioCrearPedido;
