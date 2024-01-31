@@ -27,7 +27,7 @@ public class Pedido {
     private static final String SATURDAY="SATURDAY";
     private static  final String NO_SE_PUEDE_AGENDAR_EN_DIA_SABADO="No se puede agendar en día sabado";
     private static final int DURACION_MAXIMA_PEDIDO=34;
-    private static final String DURACION_MAXIMA_DE_UN_MES="La duración de la cita debe ser maximo de un mes";
+    private static final String DURACION_MAXIMA_DE_UN_MES="La duración del pedido debe ser maximo de un mes";
     private static final String FECHA_INCORRECTA="La fecha inicial no debe ser mayor a la fecha final";
     private static final String FECHA_INCORRECTA_CREACION="La fecha inicial no debe ser menor a la fecha actual";
     private static final String FECHA_INCORRECTA_APLAZADO="La fecha inicial no debe ser mayor a la fecha de aplazo";
@@ -75,7 +75,6 @@ public class Pedido {
         this.idTrabajador = idTrabajador;
         this.idValoracion = idValoracion;
         validarNoAgendarDiaSabado();
-        validarDuracionMinima();
     }
 
     private  void validarNoAgendarDiaSabado(){
@@ -84,16 +83,7 @@ public class Pedido {
         }
     }
 
-    private void validarDuracionMinima() {
-        int dias= (int) DAYS.between(this.fechaInicio, this.fechaFinal);
-        if(dias<=DURACION_MAXIMA_PEDIDO) {
-            throw new ExcepcionValorInvalido(DURACION_MAXIMA_DE_UN_MES);
-        }
-    }
-
-
-
-    public void validarFechaAplazo(LocalDateTime nuevaFecha){
+    public void validarFechaAplazado(LocalDateTime nuevaFecha){
         validarMenorFecha(this.fechaInicio,nuevaFecha,FECHA_INCORRECTA_APLAZADO);
         Period periodo = Period.between(
                 this.fechaInicio.toLocalDate(),
