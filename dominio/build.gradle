@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+
+}
+
+group = 'com.portaexperiencia'
+version = '0.0.1-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation project.ext.springbootjdbc
+    compileOnly project.ext.lombok
+    annotationProcessor project.ext.lombok
+    implementation project(':compartido')
+
+
+}
+
+test {
+    useJUnitPlatform()
+}

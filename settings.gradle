@@ -1,4 +1,6 @@
-rootProject.name = 'backend'
+rootProject.name = 'portex'
 include 'compartido'
-
+include 'dominio'
+include 'dominio'
+include 'infraestructura'
 

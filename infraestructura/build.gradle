@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.portaexperiencia'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation project(':dominio')
+    implementation project(':compartido')
+    implementation project.ext.springbootweb
+    implementation project.ext.springbootjdbc
+    implementation project.ext.springbootsecurity
+    testImplementation project.ext.junit5
+    testImplementation project.ext.jupiter
+    testImplementation project.ext.springboottest
+    testImplementation project.ext.archunit
+    runtimeOnly project.ext.mysqlconector
+    runtimeOnly project.ext.h2
+    testImplementation project.ext.flywaytest
+
+
+
+
+}
+
+test {
+    useJUnitPlatform()
+}
