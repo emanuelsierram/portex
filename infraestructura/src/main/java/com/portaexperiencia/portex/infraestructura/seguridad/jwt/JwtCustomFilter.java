@@ -52,7 +52,6 @@ public class JwtCustomFilter extends OncePerRequestFilter {
         );
 
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-        System.out.println(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request,response);
 
     }

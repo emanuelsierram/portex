@@ -16,8 +16,8 @@ dependencies {
     implementation project.ext.springbootweb
     implementation project.ext.springbootjdbc
     implementation project.ext.springbootsecurity
-    testImplementation project.ext.junit5
     testImplementation project.ext.jupiter
+    testRuntimeOnly project.ext.laucher
     testImplementation project.ext.springboottest
     testImplementation project.ext.archunit
     runtimeOnly project.ext.mysqlconector
