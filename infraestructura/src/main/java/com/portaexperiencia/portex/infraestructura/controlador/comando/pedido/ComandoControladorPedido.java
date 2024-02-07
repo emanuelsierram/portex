@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/pedidos")
-public class ControladorPedido {
+public class ComandoControladorPedido {
 
 
     private final ServicioCrearPedido servicioCrearPedido;
 
 
     @Autowired
-    public ControladorPedido(ServicioCrearPedido servicioCrearPedido) {
+    public ComandoControladorPedido(ServicioCrearPedido servicioCrearPedido) {
         this.servicioCrearPedido = servicioCrearPedido;
     }
 
