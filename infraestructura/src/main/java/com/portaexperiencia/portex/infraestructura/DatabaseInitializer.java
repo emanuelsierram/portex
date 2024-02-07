@@ -23,7 +23,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        executeSqlScript("V1__schema.sql");
+        executeSqlScript("schema.sql");
     }
 
     private void executeSqlScript(String scriptPath) throws IOException {

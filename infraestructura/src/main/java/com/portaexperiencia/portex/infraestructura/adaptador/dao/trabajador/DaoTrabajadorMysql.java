@@ -11,10 +11,10 @@ import java.util.List;
 @Component
 public class DaoTrabajadorMysql implements DaoTrabajador {
 
-    private static String sqlListar = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio FROM trabajadores WHERE estado = 'activo'";
-    private static String sqlConsultarTrabajadorPorCedula = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio FROM trabajadores WHERE cedula = :cedula";
-    private static String sqlConsultarServicioPorTrabajador= "SELECT id_servicio, nombre_servicio, descripcion_servicio, categoria_id_fk, trabajador_id_fk FROM servicios WHERE trabajador_id_fk = :trabajador_id_fk";
-    private static String sqlConsultarTrabajadorPorId = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio FROM trabajadores WHERE id_trabajador = :id_trabajador";
+    private static String sqlListar = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio FROM portafolio.trabajadores WHERE estado = 'activo'";
+    private static String sqlConsultarTrabajadorPorCedula = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio FROM portafolio.trabajadores WHERE cedula = :cedula";
+    private static String sqlConsultarServicioPorTrabajador= "SELECT id_servicio, nombre_servicio, descripcion_servicio, categoria_id_fk, trabajador_id_fk FROM portafolio.servicios WHERE trabajador_id_fk = :trabajador_id_fk";
+    private static String sqlConsultarTrabajadorPorId = "SELECT id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio FROM portafolio.trabajadores WHERE id_trabajador = :id_trabajador";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
@@ -46,6 +46,6 @@ public class DaoTrabajadorMysql implements DaoTrabajador {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("id_trabajador", id);
 
-        return customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlConsultarTrabajadorPorCedula,parameterSource, new MapeoTrabajador());
+        return customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sqlConsultarTrabajadorPorId,parameterSource, new MapeoTrabajador());
     }
 }

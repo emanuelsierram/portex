@@ -12,8 +12,8 @@ import java.util.List;
 @Component
 public class DaoUsuarioMysql implements DaoUsuario {
 
-    private static String sqlConsultaUsuarioPorId = "SELECT usuario, contrasena, email, bloqueado, desabilitado FROM users WHERE usuario = :usuario";
-    private static String sqlConsultaRolesUsuario = "SELECT usuario, rol, fecha_creacion  FROM user_role WHERE usuario = :usuario";
+    private static String sqlConsultaUsuarioPorId = "SELECT usuario, contrasena, email, bloqueado, desabilitado FROM portafolio.users WHERE usuario = :usuario";
+    private static String sqlConsultaRolesUsuario = "SELECT usuario, rol, fecha_creacion  FROM portafolio.user_role WHERE usuario = :usuario";
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
 
