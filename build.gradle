@@ -20,6 +20,9 @@ configurations {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation project(':infraestructura')
+
 
 }
 
@@ -30,8 +33,8 @@ allprojects {
 
 	project.ext.springbootweb = ["org.springframework.boot:spring-boot-starter-web:${springBootVersion}"]
 	project.ext.springbootsecurity = ["org.springframework.boot:spring-boot-starter-security:${springBootVersion}"]
-	project.ext.junit5 =["junit:junit:4.12"]
-	project.ext.jupiter = ["org.junit.jupiter:junit-jupiter-api:5.3.1"]
+	project.ext.laucher =["org.junit.platform:junit-platform-launcher"]
+	project.ext.jupiter = ["org.junit.jupiter:junit-jupiter-api:5.9.2"]
 	project.ext.springboottest = ["org.springframework.boot:spring-boot-starter-test:${springBootVersion}"]
 	project.ext.springbootjdbc = ["org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"]
 	project.ext.mysqlconector = ["mysql:mysql-connector-java:8.0.24"]
