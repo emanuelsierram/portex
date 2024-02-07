@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public class RepositorioPedidoMySql implements RepositorioPedido {
 
-    private static String sqlCrear = "INSERT INTO Pedidos (nombre_pedido, descripcion, estado, fecha_creacion, fecha_inicio, fecha_final, cliente_id_fk, trabajador_id_fk, valoracion_id_fk) VALUES (:nombre, :descripcion, :estado, :fechaCreacion, :fechaInicio, :fechaFinal, :idCliente, :idTrabajador, :idValoracion)";
-    private static String sqlListarPorIdPedido = "SELECT nombre_pedido, descripcion, estado, fecha_creacion, fecha_inicio, fecha_final, cliente_id_fk, trabajador_id_fk, valoracion_id_fk FROM Pedidos WHERE trabajador_id_fk = :trabajador_id_fk";
+    private static String sqlCrear = "INSERT INTO portafolio.pedidos (nombre_pedido, descripcion, estado, fecha_creacion, fecha_inicio, fecha_final, cliente_id_fk, trabajador_id_fk, valoracion_id_fk) VALUES (:nombre, :descripcion, :estado, :fechaCreacion, :fechaInicio, :fechaFinal, :idCliente, :idTrabajador, :idValoracion)";
+    private static String sqlListarPorIdPedido = "SELECT nombre_pedido, descripcion, estado, fecha_creacion, fecha_inicio, fecha_final, cliente_id_fk, trabajador_id_fk, valoracion_id_fk FROM portafolio.pedidos WHERE trabajador_id_fk = :trabajador_id_fk";
 
 
     private final CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate;
