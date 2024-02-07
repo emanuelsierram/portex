@@ -26,7 +26,6 @@ public class AuthControloador {
     public ResponseEntity<Void> login(@RequestBody DtoLogin dtoLogin){
         UsernamePasswordAuthenticationToken login = new UsernamePasswordAuthenticationToken(dtoLogin.getUsuario(), dtoLogin.getContrasena());
         Authentication authentication =  this.authenticationManager.authenticate(login);
-
         String jwt = this.jwtTokenManager.crear(dtoLogin.getUsuario());
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwt).build();
     }

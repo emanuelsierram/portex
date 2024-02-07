@@ -1,6 +1,7 @@
 package com.portaexperiencia.portex.controlador.trabajador;
 
 import com.portaexperiencia.ApplicationMock;
+import com.portaexperiencia.portex.infraestructura.controlador.consulta.trabajador.ConsultaControladorTrabajador;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ConsultaControladorTrabajadorTest.class)
+@WebMvcTest(ConsultaControladorTrabajador.class)
 @ContextConfiguration(classes= ApplicationMock.class)
 @ActiveProfiles("test")
 public class ConsultaControladorTrabajadorTest {
