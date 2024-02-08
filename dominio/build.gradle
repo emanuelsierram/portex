@@ -16,6 +16,8 @@ dependencies {
     implementation project.ext.springbootjdbc
     compileOnly project.ext.lombok
     annotationProcessor project.ext.lombok
+    testImplementation project.ext.jupiter
+    testImplementation project.ext.springboottest
     implementation project(':compartido')
 
 

@@ -218,7 +218,7 @@ CREATE TABLE IF NOT EXISTS portafolio.user_role (
 
 
 
-INSERT IGNORE INTO portafolio.users (usuario, contrasena, email, bloqueado, desabilitado) VALUES ('admin', '$10$p8IpxWJxN6NKlY5lrSYpOeqjioMD.yi4himTWPB9UcJXOI9OszR1i', 'emanuelsierra17@gmail.com', '0', '0');
+INSERT IGNORE INTO portafolio.users (usuario, contrasena, email, bloqueado, desabilitado) VALUES ('admin', '$2y$10$TjskTc1Nms0WGp4HCMdZ0eEb8NohnONsTSSM1yQxBFmBiSOx9KlGK', 'emanuelsierra17@gmail.com', '0', '0');
 INSERT IGNORE INTO portafolio.user_role (usuario, rol, fecha_creacion) VALUES ('admin', 'ADMIN', '2024-01-15 13:17:12');
 INSERT IGNORE INTO portafolio.imagenes (id_imagenes, nombre, formato, ruta) VALUES ('1', 'imagen', 'jpg', 'ruta');
 INSERT IGNORE INTO portafolio.categoria (id_categoria, nombre_categoria, descripcion_categoria, imagenes_id_fk) VALUES ('1', 'Tecnología', 'Tecnología', '1');

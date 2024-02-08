@@ -1,8 +1,8 @@
 package com.portaexperiencia.portex.infraestructura.seguridad.controlador;
 
 
-import com.portaexperiencia.portex.modelo.dto.DtoLogin;
-import com.portaexperiencia.infraestructura.jwt.JwtTokenManager;
+import com.portaexperiencia.portex.modelo.entidad.Login;
+import com.portaexperiencia.portex.servicio.ServicioIniciarSesion;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,18 +15,18 @@ import org.springframework.web.bind.annotation.*;
 public class AuthControloador {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtTokenManager jwtTokenManager;
+    private final ServicioIniciarSesion servicioIniciarSesion;
 
-    public AuthControloador(AuthenticationManager authenticationManager, JwtTokenManager jwtTokenManager) {
+    public AuthControloador(AuthenticationManager authenticationManager, ServicioIniciarSesion servicioIniciarSesion) {
         this.authenticationManager = authenticationManager;
-        this.jwtTokenManager = jwtTokenManager;
+        this.servicioIniciarSesion = servicioIniciarSesion;
     }
 
     @PostMapping
-    public ResponseEntity<Void> login(@RequestBody DtoLogin dtoLogin){
+    public ResponseEntity<Void> login(@RequestBody Login dtoLogin){
         UsernamePasswordAuthenticationToken login = new UsernamePasswordAuthenticationToken(dtoLogin.getUsuario(), dtoLogin.getContrasena());
         Authentication authentication =  this.authenticationManager.authenticate(login);
-        String jwt = this.jwtTokenManager.crear(dtoLogin.getUsuario());
+        String jwt = servicioIniciarSesion.ejecutar(dtoLogin);
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, jwt).build();
     }
 

@@ -2,12 +2,12 @@ package com.portaexperiencia.portex.testdatabuilder;
 
 import com.portaexperiencia.portex.modelo.entidad.Login;
 
-public class ComandoLoginTestDataBuilder {
+public class LoginTestDataBuilder {
 
     private String usuario;
     private String contrasena;
 
-    public ComandoLoginTestDataBuilder(){
+    public LoginTestDataBuilder(){
         usuario="admin";
         contrasena="admin";
     }
