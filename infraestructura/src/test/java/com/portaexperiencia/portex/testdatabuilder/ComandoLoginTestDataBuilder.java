@@ -1,6 +1,6 @@
 package com.portaexperiencia.portex.testdatabuilder;
 
-import com.portaexperiencia.portex.modelo.dto.DtoLogin;
+import com.portaexperiencia.portex.modelo.entidad.Login;
 
 public class ComandoLoginTestDataBuilder {
 
@@ -8,11 +8,11 @@ public class ComandoLoginTestDataBuilder {
     private String contrasena;
 
     public ComandoLoginTestDataBuilder(){
-        usuario="cliente";
-        contrasena="inteligentes17";
+        usuario="admin";
+        contrasena="admin";
     }
 
-public DtoLogin buid(){return new DtoLogin(usuario,contrasena);}
+public Login buid(){return new Login(usuario,contrasena);}
 
 
 }
