@@ -21,4 +21,6 @@ public class ManejadorListarTrabajadores {
     public DtoTrabajador ejecutar(Long id){return this.daoTrabajador.consultarPorIdTrabajador(id);}
 
 
+
+
 }

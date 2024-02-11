@@ -14,13 +14,11 @@ import java.util.List;
 public class ConsultaControladorTrabajador {
 
     private final ManejadorListarTrabajadores manejadorListarTrabajadores;
-    private final ManejadorListarServicio manejadorListarServicio;
 
 
 
-    public ConsultaControladorTrabajador(ManejadorListarTrabajadores manejadorListarTrabajadores, ManejadorListarServicio manejadorListarServicio) {
+    public ConsultaControladorTrabajador(ManejadorListarTrabajadores manejadorListarTrabajadores) {
         this.manejadorListarTrabajadores = manejadorListarTrabajadores;
-        this.manejadorListarServicio = manejadorListarServicio;
     }
     @GetMapping
     public List<DtoTrabajador> listar(){
@@ -36,8 +34,5 @@ public class ConsultaControladorTrabajador {
     public DtoTrabajador consultarTrabajadorPorId(@PathVariable Long id) {
         return this.manejadorListarTrabajadores.ejecutar(id);
     }
-    @GetMapping("/{id}/servicios")
-    public List<DtoServicio> consultarServiciosPorTrabajador(@PathVariable Long id) {
-        return this.manejadorListarServicio.ejecutar(id);
-    }
+
 }

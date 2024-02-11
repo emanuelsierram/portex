@@ -36,7 +36,8 @@ public class ConfiguracionSeguridad{
                             .requestMatchers("/login").permitAll()
                             .requestMatchers(HttpMethod.GET,"/trabajadores").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET,"/trabajadores/perfil").hasRole("ADMIN")
-                            .requestMatchers(HttpMethod.GET,"/trabajadores/*/servicios").hasAnyRole("ADMIN","CLIENTE")
+                            .requestMatchers(HttpMethod.GET,"/servicios/*").hasAnyRole("ADMIN","CLIENTE")
+                            .requestMatchers(HttpMethod.GET,"/servicios/trabajadores/*").hasAnyRole("ADMIN","CLIENTE")
                             .anyRequest()
                             .authenticated();
                 })
