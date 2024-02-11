@@ -20,8 +20,15 @@ public class ConsultaControladorServicio {
         this.manejadorListarServicio = manejadorListarServicio;
     }
 
-    @GetMapping("/{id}/servicios")
+    @GetMapping("/{id}")
+    public DtoServicio consultarServiciosPorId(@PathVariable Long id) {
+        return this.manejadorListarServicio.ejecutar2(id);
+    }
+
+    @GetMapping("/trabajador/{id}")
     public List<DtoServicio> consultarServiciosPorTrabajador(@PathVariable Long id) {
         return this.manejadorListarServicio.ejecutar(id);
     }
+
+
 }
