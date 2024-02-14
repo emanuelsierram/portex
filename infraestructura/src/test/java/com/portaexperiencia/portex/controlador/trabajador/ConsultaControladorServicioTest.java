@@ -29,10 +29,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class ConsultaControladorServicioTest {
 
-    private final static String TOKEN_PRUEBA="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImVtYW51ZWxzaWVycmExNyIsImV4cCI6MTcwNzg0NjkyNSwiaWF0IjoxNzA2NTUwOTI1fQ.HrIaSh6cRrl61OLpreKiBaUq25magF3NvdS3iURAA58";
+    private final static String TOKEN_PRUEBA="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImVtYW51ZWxzaWVycmExNyIsImV4cCI6MTcwOTI0NTAxMiwiaWF0IjoxNzA3OTQ5MDEyfQ.tMOYJ23yTjWCqkjQaW4-7c5ENWuXajBkk9Z8h2mrUHY";
     private final static String CEDULA="12350407178";
     @Autowired
     private MockMvc mockMvc;
+
+
+    @Test
+    public void listarServiciosTest() throws Exception {
+
+        mockMvc.perform(get("/servicios")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN_PRUEBA)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].nombre", is("Mantenimiento de PC")));
+    }
+
+
+
+
 
     @Test
     public void consultarServiciosPorTrabajador() throws Exception {

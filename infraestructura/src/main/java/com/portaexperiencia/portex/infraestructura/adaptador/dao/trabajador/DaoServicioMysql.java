@@ -10,6 +10,8 @@ import java.util.List;
 @Component
 public class DaoServicioMysql implements DaoServicio {
 
+    private static String sqlListarServicios= "SELECT id_servicio, nombre_servicio, descripcion_servicio, categoria_id_fk, trabajador_id_fk FROM portafolio.servicios";
+
     private static String sqlConsultarServicioPorTrabajador= "SELECT id_servicio, nombre_servicio, descripcion_servicio, categoria_id_fk, trabajador_id_fk FROM portafolio.servicios WHERE trabajador_id_fk = :trabajador_id_fk";
     private static String sqlConsultarServicioPorId= "SELECT id_servicio, nombre_servicio, descripcion_servicio, categoria_id_fk, trabajador_id_fk FROM portafolio.servicios WHERE id_servicio = :id_servicio";
 
@@ -18,6 +20,11 @@ public class DaoServicioMysql implements DaoServicio {
 
     public DaoServicioMysql(CustomNamedParameterJdbcTemplate customNamedParameterJdbcTemplate) {
         this.customNamedParameterJdbcTemplate = customNamedParameterJdbcTemplate;
+    }
+
+    @Override
+    public List<DtoServicio> listarServicios() {
+        return customNamedParameterJdbcTemplate.getNamedParameterJdbcTemplate().query(sqlListarServicios,new MapeoServicio());
     }
 
     @Override
