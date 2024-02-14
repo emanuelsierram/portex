@@ -6,6 +6,9 @@ import java.util.List;
 
 public interface DaoServicio {
 
+
+    List<DtoServicio> listarServicios();
+
     List<DtoServicio> consultarServiciosPorTrabajador(Long idTrabajador);
 
     DtoServicio consultarTrabajadorPorId(Long id);

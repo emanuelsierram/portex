@@ -18,6 +18,9 @@ public class ManejadorListarServicio {
         this.daoServicio = daoServicio;
     }
 
+    public List<DtoServicio> ejecutar(){
+        return this.daoServicio.listarServicios();}
+
 
     public List<DtoServicio> ejecutar(Long id){
         return this.daoServicio.consultarServiciosPorTrabajador(id);}
