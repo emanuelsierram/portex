@@ -23,6 +23,8 @@ dependencies {
     runtimeOnly project.ext.mysqlconector
     runtimeOnly project.ext.h2
     testImplementation project.ext.flywaytest
+    compileOnly project.ext.lombok
+    annotationProcessor project.ext.lombok
 
 
 

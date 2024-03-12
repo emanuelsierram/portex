@@ -1,4 +1,4 @@
-package com.portaexperiencia.portex.infraestructura.controlador.consulta;
+package com.portaexperiencia.portex.infraestructura.controlador.consulta.trabajador;
 
 import com.portaexperiencia.portex.modelo.dto.DtoServicio;
 import com.portaexperiencia.portex.modelo.dto.DtoTrabajador;

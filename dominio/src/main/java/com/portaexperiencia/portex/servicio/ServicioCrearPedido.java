@@ -20,7 +20,6 @@ public class ServicioCrearPedido {
     }
 
 
-    @Transactional
     public Long ejecutar(Pedido pedido){
         validarExistenciaPrevia(pedido);
         return this.repositorioPedido.crear(pedido);
