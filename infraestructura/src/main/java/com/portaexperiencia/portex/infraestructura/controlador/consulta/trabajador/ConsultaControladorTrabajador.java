@@ -1,10 +1,7 @@
 package com.portaexperiencia.portex.infraestructura.controlador.consulta.trabajador;
 
 
-import com.portaexperiencia.portex.infraestructura.controlador.consulta.ManejadorListarServicio;
-import com.portaexperiencia.portex.modelo.dto.DtoServicio;
 import com.portaexperiencia.portex.modelo.dto.DtoTrabajador;
-import com.portaexperiencia.portex.infraestructura.controlador.consulta.ManejadorListarTrabajadores;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
