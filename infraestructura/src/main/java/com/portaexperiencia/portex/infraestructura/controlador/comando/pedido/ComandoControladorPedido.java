@@ -1,12 +1,8 @@
 package com.portaexperiencia.portex.infraestructura.controlador.comando.pedido;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.portaexperiencia.portex.modelo.entidad.Pedido;
-import com.portaexperiencia.portex.servicio.ServicioCrearPedido;
+import com.portaexperiencia.aplicacion.ComandoRespuesta;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class ComandoControladorPedido {
 
 
-    private final ServicioCrearPedido servicioCrearPedido;
+    private final ManejadorCrearPedido manejadorCrearPedido;
 
 
     @Autowired
-    public ComandoControladorPedido(ServicioCrearPedido servicioCrearPedido) {
-        this.servicioCrearPedido = servicioCrearPedido;
+    public ComandoControladorPedido(ManejadorCrearPedido manejadorCrearPedido) {
+        this.manejadorCrearPedido = manejadorCrearPedido;
     }
 
 
+
     @PostMapping
+    public ComandoRespuesta<Long> crear(@RequestBody ComandoPedido comandoPedido){
+
+        return manejadorCrearPedido.ejecutar(comandoPedido);
+    }
+
+      /* @PostMapping
     public ResponseEntity<String> crear(@RequestBody Pedido pedido){
         ObjectMapper objectMapper= new ObjectMapper();
         String json=null;
@@ -39,7 +42,7 @@ public class ComandoControladorPedido {
         }
 
         return mensaje;
-    }
+    }*/
 
 
 

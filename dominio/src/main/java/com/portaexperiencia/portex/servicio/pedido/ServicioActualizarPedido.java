@@ -1,4 +1,4 @@
-package com.portaexperiencia.portex.servicio;
+package com.portaexperiencia.portex.servicio.pedido;
 
 import com.portaexperiencia.portex.modelo.entidad.Pedido;
 import com.portaexperiencia.portex.puerto.repositorio.RepositorioPedido;

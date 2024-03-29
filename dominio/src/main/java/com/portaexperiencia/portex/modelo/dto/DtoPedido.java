@@ -15,6 +15,7 @@ public class DtoPedido {
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFinal;
+    private Double presupuesto;
     private Long idCliente;
     private Long idTrabajador;
     private Long idValoracion;
