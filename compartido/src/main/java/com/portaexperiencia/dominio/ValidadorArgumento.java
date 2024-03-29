@@ -54,7 +54,7 @@ public class ValidadorArgumento {
     }
 
     public static void validarMenorFecha(LocalDateTime fechaInicial, LocalDateTime fechaFinal, String mensaje) {
-        if (fechaInicial.toLocalDate().isAfter(fechaFinal.toLocalDate())) {
+        if (fechaInicial.isAfter(fechaFinal)) {
             throw new ExcepcionValorInvalido(mensaje);
         }
     }

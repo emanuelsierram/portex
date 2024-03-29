@@ -17,10 +17,11 @@ public class MapeoPedido implements RowMapper<DtoPedido>, MapperResult {
         LocalDateTime fechaCreacion = extraerLocalDateTime(rs, "fecha_creacion");
         LocalDateTime fechaInicio = extraerLocalDateTime(rs, "fecha_inicio");
         LocalDateTime fechaFinal = extraerLocalDateTime(rs, "fecha_final");
+        Double presupuesto = rs.getDouble("presupuesto");
         Long idCliente = rs.getLong("cliente_id_fk");
         Long idTrabajador = rs.getLong("trabajador_id_fk");
         Long idValoracion = rs.getLong("valoracion_id_fk");
 
-        return new DtoPedido(id,nombre,descripcion,estado,fechaCreacion,fechaInicio,fechaFinal,idCliente,idTrabajador,idValoracion);
+        return new DtoPedido(id,nombre,descripcion,estado,fechaCreacion,fechaInicio,fechaFinal,presupuesto,idCliente,idTrabajador,idValoracion);
     }
 }

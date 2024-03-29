@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class ConsultaControladorTrabajadorTest {
 
-    private final static String TOKEN_PRUEBA = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImVtYW51ZWxzaWVycmExNyIsImV4cCI6MTcwNzg0NjkyNSwiaWF0IjoxNzA2NTUwOTI1fQ.HrIaSh6cRrl61OLpreKiBaUq25magF3NvdS3iURAA58";
+    private final static String TOKEN_PRUEBA = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImVtYW51ZWxzaWVycmExNyIsImV4cCI6MTcxMjYyOTIwMSwiaWF0IjoxNzExMzMzMjAxfQ.AUvSQw0xQKgnE_l7Po1uUGhbx1oNweOpA22mROZDGyY";
     private final static String CEDULA = "12350407178";
     @Autowired
     private MockMvc mockMvc;

@@ -20,6 +20,7 @@ public class Pedido {
     private static final String SE_DEBE_INGRESAR_LA_DESCRIPCION="Se debe ingresar la descripción";
     private static final String SE_DEBE_INGRESAR_LA_FECHA_INICIO="Se debe ingresar la fecha de inicio";
     private static final String SE_DEBE_INGRESAR_LA_FECHA_FINAL="Se debe ingresar la fecha final";
+    private static final String SE_DEBE_INGRESAR_EL_PRESUPUESTO="Se debe ingresar el presupuesto";
     private static final String SATURDAY="SATURDAY";
     private static  final String NO_SE_PUEDE_AGENDAR_EN_DIA_SABADO="No se puede agendar en día sabado";
     private static final int DURACION_MAXIMA_PEDIDO=34;
@@ -40,6 +41,7 @@ public class Pedido {
     private LocalDateTime fechaCreacion;
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFinal;
+    private Double presupuesto;
     private Long idCliente;
     private Long idTrabajador;
     private Long idValoracion;
@@ -50,6 +52,7 @@ public class Pedido {
                   String descripcion,
                   LocalDateTime fechaInicio,
                   LocalDateTime fechaFinal,
+                  Double presupuesto,
                   Long idCliente,
                   Long idTrabajador,
                   Long idValoracion) {
@@ -58,8 +61,9 @@ public class Pedido {
         validarObligatorio(descripcion,SE_DEBE_INGRESAR_LA_DESCRIPCION);
         validarObligatorio(fechaInicio,SE_DEBE_INGRESAR_LA_FECHA_INICIO);
         validarObligatorio(fechaFinal,SE_DEBE_INGRESAR_LA_FECHA_FINAL);
-        validarMenorFecha(fechaInicio,fechaFinal,FECHA_INCORRECTA);
+        validarObligatorio(presupuesto,SE_DEBE_INGRESAR_EL_PRESUPUESTO);
         validarMenorFecha(LocalDateTime.now(),fechaInicio,FECHA_INCORRECTA_CREACION);
+        validarMenorFecha(fechaInicio,fechaFinal,FECHA_INCORRECTA);
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -67,6 +71,7 @@ public class Pedido {
         this.fechaCreacion=LocalDateTime.now();
         this.fechaInicio = fechaInicio;
         this.fechaFinal = fechaFinal;
+        this.presupuesto = presupuesto;
         this.idCliente = idCliente;
         this.idTrabajador = idTrabajador;
         this.idValoracion = idValoracion;

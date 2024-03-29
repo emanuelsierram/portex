@@ -38,6 +38,7 @@ public class ConfiguracionSeguridad{
                             .requestMatchers(HttpMethod.GET,"/trabajadores/perfil").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET,"/servicios").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET,"/servicios/**").hasAnyRole("ADMIN","CLIENTE")
+                            .requestMatchers(HttpMethod.POST,"/pedidos").hasAnyRole("ADMIN","CLIENTE")
                             .anyRequest()
                             .authenticated();
                 })

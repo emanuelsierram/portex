@@ -110,6 +110,7 @@ CREATE TABLE IF NOT EXISTS portafolio.pedidos (
   fecha_creacion DATETIME NOT NULL,
   fecha_inicio DATETIME NOT NULL,
   fecha_final DATETIME NOT NULL,
+  presupuesto DOUBLE NOT NULL,
   cliente_id_fk INT NOT NULL,
   trabajador_id_fk INT NOT NULL,
   valoracion_id_fk INT NOT NULL,
