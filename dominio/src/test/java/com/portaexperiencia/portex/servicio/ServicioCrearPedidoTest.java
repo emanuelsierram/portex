@@ -50,8 +50,8 @@ public class ServicioCrearPedidoTest {
                     "Descripcion pedido",
                     "estado",
                     LocalDateTime.now(),
-                    LocalDateTime.of(2024,4,1,20,10,20),
-                    LocalDateTime.of(2024,4,17,20,10,20),
+                    LocalDateTime.now().plusMonths(1),
+                    LocalDateTime.now().plusMonths(4),
                     100.0,
                     1L,
                     1L,
@@ -75,8 +75,8 @@ public class ServicioCrearPedidoTest {
                     "Descripcion pedido",
                     "estado",
                     LocalDateTime.now(),
-                    LocalDateTime.of(2024,3,31,11,0),
-                    LocalDateTime.of(2024,4,18,11,0),
+                    LocalDateTime.now().plusMonths(-1),
+                    LocalDateTime.now().plusMonths(5),
                     100.0,
                     1L,
                     1L,
@@ -99,8 +99,8 @@ public class ServicioCrearPedidoTest {
                     "Descripcion pedido",
                     "estado",
                     LocalDateTime.now(),
-                    LocalDateTime.of(2024,4,2,11,0),
-                    LocalDateTime.of(2024,4,16,11,0),
+                    LocalDateTime.now().plusMonths(2),
+                    LocalDateTime.now().plusMonths(3),
                     100.0,
                     1L,
                     1L,
@@ -124,8 +124,8 @@ public class ServicioCrearPedidoTest {
                     "Descripcion pedido",
                     "estado",
                     LocalDateTime.now(),
-                    LocalDateTime.of(2024,4,5,11,0),
-                    LocalDateTime.of(2024,4,19,11,0),
+                    LocalDateTime.now().plusMonths(2),
+                    LocalDateTime.now().plusMonths(5),
                     100.0,
                     1L,
                     1L,
@@ -148,8 +148,8 @@ public class ServicioCrearPedidoTest {
                     "Descripcion pedido",
                     "estado",
                     LocalDateTime.now(),
-                    LocalDateTime.of(2024,3,31,11,0),
-                    LocalDateTime.of(2024,4,11,11,0),
+                    LocalDateTime.now().plusMonths(-1),
+                    LocalDateTime.now().plusMonths(2),
                     100.0,
                     1L,
                     1L,
@@ -164,16 +164,16 @@ public class ServicioCrearPedidoTest {
     @Test
     public void validarIngresoDeFechaInicioNoMenorAFechaActual(){
         PedidoTestDataBuilder pedidoTestDataBuilder = new PedidoTestDataBuilder().conFechaInicio(
-                LocalDateTime.of(2023,4,20,13,30)
+                LocalDateTime.now().plusMonths(-2)
         );
         BasePrueba.assertThrows(() -> pedidoTestDataBuilder.build(), ExcepcionValorInvalido.class, "La fecha inicial no debe ser menor a la fecha actual");
     }
 
     @Test
-    public void validarIngresoDeFechaInciioNoMayorAFechaFinal(){
+    public void validarIngresoDeFechaIncioNoMayorAFechaFinal(){
         PedidoTestDataBuilder pedidoTestDataBuilder = new PedidoTestDataBuilder().conFechas(
-                LocalDateTime.of(2024,4,20,13,30),
-                LocalDateTime.of(2024,4,20,11,30)
+                LocalDateTime.now().plusMonths(4),
+                LocalDateTime.now().plusMonths(2)
         );
         BasePrueba.assertThrows(() -> pedidoTestDataBuilder.build(), ExcepcionValorInvalido.class, "La fecha inicial no debe ser mayor a la fecha final");
     }
@@ -181,8 +181,8 @@ public class ServicioCrearPedidoTest {
     @Test
     public void validarNoAngendarDiaSabadoFechaInicial(){
         PedidoTestDataBuilder pedidoTestDataBuilder = new PedidoTestDataBuilder().conFechas(
-                LocalDateTime.of(2024,3,30,13,30),
-                LocalDateTime.of(2024,4,21,11,30)
+                LocalDateTime.of(2025,3,29,13,30),
+                LocalDateTime.of(2025,4,21,11,30)
         );
         BasePrueba.assertThrows(()-> pedidoTestDataBuilder.build(), ExcepcionValorInvalido.class,"No se puede agendar en día sabado");
 
@@ -191,8 +191,8 @@ public class ServicioCrearPedidoTest {
     @Test
     public void validarNoAngendarDiaSabadoFechaFinal(){
         PedidoTestDataBuilder pedidoTestDataBuilder = new PedidoTestDataBuilder().conFechas(
-                LocalDateTime.of(2024,3,31,13,30),
-                LocalDateTime.of(2024,4,20,11,30)
+                LocalDateTime.of(2025,3,29,13,30),
+                LocalDateTime.of(2025,4,19,11,30)
         );
         BasePrueba.assertThrows(()-> pedidoTestDataBuilder.build(), ExcepcionValorInvalido.class,"No se puede agendar en día sabado");
 
