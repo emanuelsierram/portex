@@ -39,7 +39,7 @@ allprojects {
 	project.ext.springbootjdbc = ["org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"]
 	project.ext.mysqlconector = ["mysql:mysql-connector-java:8.0.24"]
 	project.ext.archunit=["com.tngtech.archunit:archunit:1.2.1"]
-	project.ext.lombok=["org.projectlombok:lombok:1.18.22"]
+	project.ext.lombok=["org.projectlombok:lombok:1.18.32"]
 	project.ext.h2 = ["com.h2database:h2:1.4.194"]
 	project.ext.flyway = ["org.flywaydb:flyway-core:5.2.1"]
 	project.ext.flywaytest = ["org.flywaydb.flyway-test-extensions:flyway-spring-test:5.2.1"]
