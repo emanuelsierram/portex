@@ -27,5 +27,4 @@ public class BeanServicio {
         return new ServicioCrearValoracion(repositorioValoracion);
     }
 
-
 }
