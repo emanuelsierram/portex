@@ -1,4 +1,4 @@
-package com.portaexperiencia.infraestructura.excepcion;
+package com.portaexperiencia.compartido.infraestructura.excepcion;
 
 public class ExcepcionTecnica extends RuntimeException {
 

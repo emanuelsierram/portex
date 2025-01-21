@@ -1,4 +1,4 @@
-package com.portaexperiencia.portex.infraestructura.controlador.consulta.trabajador;
+/*package com.portaexperiencia.portex.infraestructura.controlador.consulta.trabajador;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,3 +21,4 @@ public class ConsultaControladorImagenServicio {
         return this.manejadorImagenServicio.ejecutar(nombre,blob);
     }
 }
+*/

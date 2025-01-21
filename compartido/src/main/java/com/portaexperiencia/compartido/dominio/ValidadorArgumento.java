@@ -1,10 +1,10 @@
-package com.portaexperiencia.dominio;
+package com.portaexperiencia.compartido.dominio;
 
 
 
-import com.portaexperiencia.dominio.excepcion.ExcepcionLongitudValor;
-import com.portaexperiencia.dominio.excepcion.ExcepcionValorInvalido;
-import com.portaexperiencia.dominio.excepcion.ExcepcionValorObligatorio;
+import com.portaexperiencia.compartido.dominio.excepcion.ExcepcionLongitudValor;
+import com.portaexperiencia.compartido.dominio.excepcion.ExcepcionValorInvalido;
+import com.portaexperiencia.compartido.dominio.excepcion.ExcepcionValorObligatorio;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;

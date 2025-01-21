@@ -1,7 +1,7 @@
 package com.portaexperiencia.portex.infraestructura.seguridad.jwt;
 
 import com.portaexperiencia.portex.infraestructura.seguridad.servicio.ServicioSeguridadUsuario;
-import com.portaexperiencia.infraestructura.jwt.JwtTokenManager;
+import com.portaexperiencia.compartido.infraestructura.jwt.JwtTokenManager;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

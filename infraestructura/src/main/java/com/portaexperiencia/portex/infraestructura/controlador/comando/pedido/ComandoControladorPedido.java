@@ -1,7 +1,7 @@
 package com.portaexperiencia.portex.infraestructura.controlador.comando.pedido;
 
 
-import com.portaexperiencia.aplicacion.ComandoRespuesta;
+import com.portaexperiencia.compartido.aplicacion.ComandoRespuesta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

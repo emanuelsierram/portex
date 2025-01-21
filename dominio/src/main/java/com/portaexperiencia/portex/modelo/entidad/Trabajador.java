@@ -3,7 +3,7 @@ package com.portaexperiencia.portex.modelo.entidad;
 import lombok.Getter;
 import lombok.Setter;
 
-import static com.portaexperiencia.dominio.ValidadorArgumento.validarObligatorio;
+import static com.portaexperiencia.compartido.dominio.ValidadorArgumento.validarObligatorio;
 
 @Getter
 @Setter

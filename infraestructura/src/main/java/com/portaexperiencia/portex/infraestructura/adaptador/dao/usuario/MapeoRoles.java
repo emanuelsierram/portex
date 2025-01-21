@@ -1,7 +1,7 @@
 package com.portaexperiencia.portex.infraestructura.adaptador.dao.usuario;
 
 import com.portaexperiencia.portex.modelo.dto.DtoRol;
-import com.portaexperiencia.infraestructura.jbdc.MapperResult;
+import com.portaexperiencia.compartido.infraestructura.jbdc.MapperResult;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

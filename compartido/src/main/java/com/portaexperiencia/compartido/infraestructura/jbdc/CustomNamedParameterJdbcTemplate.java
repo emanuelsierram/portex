@@ -1,5 +1,5 @@
-package com.portaexperiencia.infraestructura.jbdc;
-import com.portaexperiencia.infraestructura.excepcion.ExcepcionTecnica;
+package com.portaexperiencia.compartido.infraestructura.jbdc;
+import com.portaexperiencia.compartido.infraestructura.excepcion.ExcepcionTecnica;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

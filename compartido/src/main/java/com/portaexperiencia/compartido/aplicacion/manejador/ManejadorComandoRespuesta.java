@@ -1,4 +1,4 @@
-package com.portaexperiencia.aplicacion.manejador;
+package com.portaexperiencia.compartido.aplicacion.manejador;
 
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,6 @@
 package com.portaexperiencia.portex.servicio;
 
-import com.portaexperiencia.infraestructura.jwt.JwtTokenManager;
+import com.portaexperiencia.compartido.infraestructura.jwt.JwtTokenManager;
 import com.portaexperiencia.portex.modelo.entidad.Login;
 import com.portaexperiencia.portex.testdatabuilder.LoginTestDataBuilder;
 import org.junit.jupiter.api.Assertions;

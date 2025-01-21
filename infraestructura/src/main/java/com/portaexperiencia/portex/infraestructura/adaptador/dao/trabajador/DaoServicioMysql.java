@@ -1,6 +1,6 @@
 package com.portaexperiencia.portex.infraestructura.adaptador.dao.trabajador;
 
-import com.portaexperiencia.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
+import com.portaexperiencia.compartido.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
 import com.portaexperiencia.portex.modelo.dto.DtoServicio;
 import com.portaexperiencia.portex.puerto.dao.DaoServicio;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

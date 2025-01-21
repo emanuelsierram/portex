@@ -1,6 +1,6 @@
 package com.portaexperiencia.portex.infraestructura.adaptador.repositorio;
 
-import com.portaexperiencia.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
+import com.portaexperiencia.compartido.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
 import com.portaexperiencia.portex.modelo.entidad.Valoracion;
 import com.portaexperiencia.portex.puerto.repositorio.RepositorioValoracion;
 import org.springframework.stereotype.Repository;
