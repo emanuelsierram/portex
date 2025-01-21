@@ -1,8 +1,6 @@
 package com.portaexperiencia.portex.infraestructura.controlador.comando.pedido;
 
 
-import com.portaexperiencia.aplicacion.ComandoRespuesta;
-import com.portaexperiencia.aplicacion.manejador.ManejadorComandoRespuesta;
 import com.portaexperiencia.portex.modelo.entidad.Pedido;
 import org.springframework.stereotype.Component;
 

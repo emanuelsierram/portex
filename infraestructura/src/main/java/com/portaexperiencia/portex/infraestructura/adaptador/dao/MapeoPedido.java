@@ -1,7 +1,7 @@
 package com.portaexperiencia.portex.infraestructura.adaptador.dao;
 import com.portaexperiencia.portex.modelo.dto.DtoPedido;
 import org.springframework.jdbc.core.RowMapper;
-import  com.portaexperiencia.infraestructura.jbdc.MapperResult;
+import com.portaexperiencia.compartido.infraestructura.jbdc.MapperResult;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

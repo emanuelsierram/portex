@@ -1,4 +1,4 @@
-package com.portaexperiencia.aplicacion;
+package com.portaexperiencia.compartido.aplicacion;
 
 public class ComandoRespuesta<T> {
 

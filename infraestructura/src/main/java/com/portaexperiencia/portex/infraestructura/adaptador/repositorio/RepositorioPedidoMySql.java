@@ -4,7 +4,7 @@ import com.portaexperiencia.portex.modelo.dto.DtoPedido;
 import com.portaexperiencia.portex.modelo.entidad.Pedido;
 import com.portaexperiencia.portex.puerto.repositorio.RepositorioPedido;
 import com.portaexperiencia.portex.infraestructura.adaptador.dao.MapeoPedido;
-import com.portaexperiencia.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
+import com.portaexperiencia.compartido.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;

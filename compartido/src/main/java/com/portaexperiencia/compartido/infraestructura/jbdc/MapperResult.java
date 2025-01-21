@@ -1,4 +1,4 @@
-package com.portaexperiencia.infraestructura.jbdc;
+package com.portaexperiencia.compartido.infraestructura.jbdc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

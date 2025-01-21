@@ -43,7 +43,6 @@ allprojects {
 	project.ext.h2 = ["com.h2database:h2:1.4.194"]
 	project.ext.flyway = ["org.flywaydb:flyway-core:5.2.1"]
 	project.ext.flywaytest = ["org.flywaydb.flyway-test-extensions:flyway-spring-test:5.2.1"]
-	project.ext.azurestorage =["com.azure:azure-storage-blob:12.10.2"]
 
 
 

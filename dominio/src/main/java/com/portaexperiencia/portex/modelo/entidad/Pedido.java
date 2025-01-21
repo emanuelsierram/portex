@@ -1,14 +1,14 @@
 package com.portaexperiencia.portex.modelo.entidad;
 
 
-import com.portaexperiencia.dominio.excepcion.ExcepcionValorInvalido;
+import com.portaexperiencia.compartido.dominio.excepcion.ExcepcionValorInvalido;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.Period;
 
-import static com.portaexperiencia.dominio.ValidadorArgumento.*;
+import static com.portaexperiencia.compartido.dominio.ValidadorArgumento.*;
 
 @Getter
 @Setter

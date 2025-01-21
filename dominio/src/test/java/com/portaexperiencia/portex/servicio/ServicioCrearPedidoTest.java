@@ -1,7 +1,7 @@
 package com.portaexperiencia.portex.servicio;
 
-import com.portaexperiencia.dominio.excepcion.ExcepcionDuplicidad;
-import com.portaexperiencia.dominio.excepcion.ExcepcionValorInvalido;
+import com.portaexperiencia.compartido.dominio.excepcion.ExcepcionDuplicidad;
+import com.portaexperiencia.compartido.dominio.excepcion.ExcepcionValorInvalido;
 import com.portaexperiencia.portex.BasePrueba;
 import com.portaexperiencia.portex.modelo.dto.DtoPedido;
 import com.portaexperiencia.portex.modelo.entidad.Pedido;

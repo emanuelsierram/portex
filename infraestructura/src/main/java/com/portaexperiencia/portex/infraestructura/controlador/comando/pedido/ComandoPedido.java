@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ComandoPedido {
+public class ComandoPedido  {
 
     private Long id;
     private String nombre;

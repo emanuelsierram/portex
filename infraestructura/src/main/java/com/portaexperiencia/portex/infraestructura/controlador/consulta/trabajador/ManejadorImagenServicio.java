@@ -1,7 +1,7 @@
 package com.portaexperiencia.portex.infraestructura.controlador.consulta.trabajador;
 
 
-import com.portaexperiencia.infraestructura.storage.AzureStorageService;
+/*import com.portaexperiencia.compartido.infraestructura.storage.AzureStorageService;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,3 +19,4 @@ public class ManejadorImagenServicio {
     }
 
 }
+*/

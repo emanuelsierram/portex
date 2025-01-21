@@ -1,4 +1,4 @@
-package com.portaexperiencia.infraestructura.jwt;
+package com.portaexperiencia.compartido.infraestructura.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

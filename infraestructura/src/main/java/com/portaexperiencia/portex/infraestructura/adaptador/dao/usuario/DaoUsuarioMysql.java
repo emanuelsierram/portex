@@ -3,7 +3,7 @@ package com.portaexperiencia.portex.infraestructura.adaptador.dao.usuario;
 import com.portaexperiencia.portex.modelo.dto.DtoRol;
 import com.portaexperiencia.portex.modelo.dto.DtoUsuario;
 import com.portaexperiencia.portex.puerto.dao.DaoUsuario;
-import com.portaexperiencia.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
+import com.portaexperiencia.compartido.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Component;
 

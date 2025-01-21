@@ -1,4 +1,4 @@
-package com.portaexperiencia.dominio.excepcion;
+package com.portaexperiencia.compartido.dominio.excepcion;
 
 public class ExcepcionDuplicidad extends RuntimeException {
 
