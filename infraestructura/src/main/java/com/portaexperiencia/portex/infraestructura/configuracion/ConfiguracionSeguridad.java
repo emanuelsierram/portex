@@ -34,7 +34,7 @@ public class ConfiguracionSeguridad{
                 .authorizeHttpRequests(customizeRequest ->{
                     customizeRequest
                             .requestMatchers("/login").permitAll()
-                            .requestMatchers(HttpMethod.GET,"/trabajadores").hasRole("ADMIN")
+                            .requestMatchers(HttpMethod.GET,"/trabajadores").permitAll()
                             .requestMatchers(HttpMethod.GET,"/trabajadores/perfil").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET,"/servicios").hasRole("ADMIN")
                             .requestMatchers(HttpMethod.GET,"/servicios/**").hasAnyRole("ADMIN","CLIENTE")

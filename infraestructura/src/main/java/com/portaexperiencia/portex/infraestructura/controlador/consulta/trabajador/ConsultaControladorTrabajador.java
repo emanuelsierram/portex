@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/trabajadores")
+//@CrossOrigin(origins = "http://localhost:61400")
 public class ConsultaControladorTrabajador {
 
     private final ManejadorListarTrabajadores manejadorListarTrabajadores;
