@@ -14,7 +14,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema portafolio
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `portafolio` DEFAULT CHARACTER SET utf8mb3 ;
+CREATE SCHEMA IF NOT EXISTS `portafolio` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 USE `portafolio` ;
 
 -- -----------------------------------------------------
@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`cartera` (
   PRIMARY KEY (`idCartera`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -43,25 +44,26 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`imagenes` (
   PRIMARY KEY (`id_imagenes`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
 -- Table `portafolio`.`categoria`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `portafolio`.`categoria` (
-  `id_categoria` INT NOT NULL AUTO_INCREMENT,
+  `id_categoria` INT NOT NULL,
   `nombre_categoria` VARCHAR(45) NOT NULL,
   `descripcion_categoria` VARCHAR(45) NOT NULL,
-  `Imagenes_id_imagenes` INT NOT NULL,
+  `imagenes_id_fk` INT NOT NULL,
   PRIMARY KEY (`id_categoria`),
-  INDEX `fk_Categoria_Imagenes1_idx` (`Imagenes_id_imagenes` ASC) VISIBLE,
+  UNIQUE INDEX `idx_imagenes` (`imagenes_id_fk` ASC) VISIBLE,
   CONSTRAINT `fk_Categoria_Imagenes1`
-    FOREIGN KEY (`Imagenes_id_imagenes`)
+    FOREIGN KEY (`imagenes_id_fk`)
     REFERENCES `portafolio`.`imagenes` (`id_imagenes`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -78,7 +80,9 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`clientes` (
   `barrio` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id_cliente`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -87,10 +91,12 @@ DEFAULT CHARACTER SET = utf8mb3;
 CREATE TABLE IF NOT EXISTS `portafolio`.`valoracion` (
   `id_valoracion` INT NOT NULL AUTO_INCREMENT,
   `comentario` VARCHAR(45) NULL DEFAULT NULL,
-  `valoracion_numerica` ENUM('1', '2', '3', '4', '5') NULL DEFAULT NULL,
+  `valoracion_numerica` VARCHAR(1) NULL DEFAULT NULL,
   PRIMARY KEY (`id_valoracion`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -111,13 +117,14 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`trabajadores` (
   UNIQUE INDEX `cedula_UNIQUE` (`cedula` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   UNIQUE INDEX `telefono_UNIQUE` (`telefono` ASC) VISIBLE,
-  INDEX `fk_Trabajadores_Cartera1_idx` (`cartera_id_cartera` ASC) VISIBLE,
+  INDEX `fk_Trabajadores_Cartera1` (`cartera_id_cartera` ASC) VISIBLE,
   CONSTRAINT `fk_Trabajadores_Cartera1`
     FOREIGN KEY (`cartera_id_cartera`)
     REFERENCES `portafolio`.`cartera` (`idCartera`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -127,17 +134,18 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`pedidos` (
   `id_pedido` INT NOT NULL AUTO_INCREMENT,
   `nombre_pedido` VARCHAR(45) NOT NULL,
   `descripcion` VARCHAR(45) NOT NULL,
-  `estado` ENUM('Solicitud', 'Abierto', 'Cancelado', 'Rechazado', 'Completado') NOT NULL,
+  `estado` VARCHAR(45) NOT NULL,
   `fecha_creacion` DATETIME NOT NULL,
   `fecha_inicio` DATETIME NOT NULL,
   `fecha_final` DATETIME NOT NULL,
+  `presupuesto` DOUBLE NOT NULL,
   `cliente_id_fk` INT NOT NULL,
   `trabajador_id_fk` INT NOT NULL,
   `valoracion_id_fk` INT NOT NULL,
   PRIMARY KEY (`id_pedido`),
-  INDEX `fk_Servicio_Clientes_idx` (`cliente_id_fk` ASC) VISIBLE,
-  INDEX `fk_Servicio_Trabajador1_idx` (`trabajador_id_fk` ASC) VISIBLE,
-  INDEX `fk_Pedidos_Valoracion1_idx` (`valoracion_id_fk` ASC) VISIBLE,
+  INDEX `fk_Pedidos_Valoracion1` (`valoracion_id_fk` ASC) VISIBLE,
+  INDEX `fk_Servicio_Clientes` (`cliente_id_fk` ASC) VISIBLE,
+  INDEX `fk_Servicio_Trabajador1` (`trabajador_id_fk` ASC) VISIBLE,
   CONSTRAINT `fk_Pedidos_Valoracion1`
     FOREIGN KEY (`valoracion_id_fk`)
     REFERENCES `portafolio`.`valoracion` (`id_valoracion`),
@@ -148,7 +156,8 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`pedidos` (
     FOREIGN KEY (`trabajador_id_fk`)
     REFERENCES `portafolio`.`trabajadores` (`id_trabajador`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -161,8 +170,8 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`servicios` (
   `categoria_id_fk` INT NOT NULL,
   `trabajador_id_fk` INT NOT NULL,
   PRIMARY KEY (`id_servicio`),
-  INDEX `fk_Servicios_Categoria1_idx` (`categoria_id_fk` ASC) VISIBLE,
-  INDEX `fk_Servicios_Trabajadores1_idx` (`trabajador_id_fk` ASC) VISIBLE,
+  INDEX `fk_Servicios_Categoria1` (`categoria_id_fk` ASC) VISIBLE,
+  INDEX `fk_Servicios_Trabajadores1` (`trabajador_id_fk` ASC) VISIBLE,
   CONSTRAINT `fk_Servicios_Categoria1`
     FOREIGN KEY (`categoria_id_fk`)
     REFERENCES `portafolio`.`categoria` (`id_categoria`),
@@ -170,46 +179,49 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`servicios` (
     FOREIGN KEY (`trabajador_id_fk`)
     REFERENCES `portafolio`.`trabajadores` (`id_trabajador`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `portafolio`.`servicios-imagenes`
+-- Table `portafolio`.`servicios_imagenes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `portafolio`.`servicios-imagenes` (
-  `id_servicios-Imagenes` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `portafolio`.`servicios_imagenes` (
+  `id_servicios_imagenes` INT NOT NULL AUTO_INCREMENT,
   `imagenes_id_imagenes_fk` INT NOT NULL,
   `servicios_id_servicio_fk` INT NOT NULL,
-  PRIMARY KEY (`id_servicios-Imagenes`),
-  INDEX `fk_Servicios-Imagenes_Imagenes1_idx` (`imagenes_id_imagenes_fk` ASC) VISIBLE,
-  INDEX `fk_Servicios-Imagenes_Servicios1_idx` (`servicios_id_servicio_fk` ASC) VISIBLE,
-  CONSTRAINT `fk_Servicios-Imagenes_Imagenes1`
+  PRIMARY KEY (`id_servicios_imagenes`),
+  INDEX `fk_Servicios_Imagenes_Imagenes1` (`imagenes_id_imagenes_fk` ASC) VISIBLE,
+  INDEX `fk_Servicios_Imagenes_Servicios1` (`servicios_id_servicio_fk` ASC) VISIBLE,
+  CONSTRAINT `fk_Servicios_Imagenes_Imagenes1`
     FOREIGN KEY (`imagenes_id_imagenes_fk`)
     REFERENCES `portafolio`.`imagenes` (`id_imagenes`),
-  CONSTRAINT `fk_Servicios-Imagenes_Servicios1`
+  CONSTRAINT `fk_Servicios_Imagenes_Servicios1`
     FOREIGN KEY (`servicios_id_servicio_fk`)
     REFERENCES `portafolio`.`servicios` (`id_servicio`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `portafolio`.`solicitud pedidos`
+-- Table `portafolio`.`solicitud_pedidos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `portafolio`.`solicitud pedidos` (
+CREATE TABLE IF NOT EXISTS `portafolio`.`solicitud_pedidos` (
   `id_solicitud_pedidos` INT NOT NULL AUTO_INCREMENT,
-  `estado` ENUM('En negociaciones', 'Aplazado', 'En proceso', 'Visita', 'Realizado', 'Cerrado') NOT NULL,
+  `estado` VARCHAR(45) NOT NULL,
   `valor` DOUBLE NOT NULL,
   `descripcion` VARCHAR(45) NULL DEFAULT NULL,
   `fecha_finalizacion` DATETIME NULL DEFAULT NULL,
   `pedidos_id_pedido` INT NOT NULL,
   PRIMARY KEY (`id_solicitud_pedidos`),
-  INDEX `fk_Solicitud pedidos_Pedidos1_idx` (`pedidos_id_pedido` ASC) VISIBLE,
-  CONSTRAINT `fk_Solicitud pedidos_Pedidos1`
+  INDEX `fk_Solicitud_pedidos_Pedidos1` (`pedidos_id_pedido` ASC) VISIBLE,
+  CONSTRAINT `fk_Solicitud_pedidos_Pedidos1`
     FOREIGN KEY (`pedidos_id_pedido`)
     REFERENCES `portafolio`.`pedidos` (`id_pedido`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -221,18 +233,19 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`traza` (
   `fecha_creacion` VARCHAR(45) NOT NULL,
   `solicitud_pedidos_id_fk` INT NOT NULL,
   PRIMARY KEY (`id_traza`),
-  INDEX `fk_Traza_Solicitud pedidos1_idx` (`solicitud_pedidos_id_fk` ASC) VISIBLE,
-  CONSTRAINT `fk_Traza_Solicitud pedidos1`
+  INDEX `fk_Traza_Solicitud_pedidos1` (`solicitud_pedidos_id_fk` ASC) VISIBLE,
+  CONSTRAINT `fk_Traza_Solicitud_pedidos1`
     FOREIGN KEY (`solicitud_pedidos_id_fk`)
-    REFERENCES `portafolio`.`solicitud pedidos` (`id_solicitud_pedidos`))
+    REFERENCES `portafolio`.`solicitud_pedidos` (`id_solicitud_pedidos`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `portafolio`.`user`
+-- Table `portafolio`.`users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `portafolio`.`user` (
+CREATE TABLE IF NOT EXISTS `portafolio`.`users` (
   `usuario` VARCHAR(20) NOT NULL,
   `contrasena` VARCHAR(200) NOT NULL,
   `email` VARCHAR(50) NULL DEFAULT NULL,
@@ -240,7 +253,8 @@ CREATE TABLE IF NOT EXISTS `portafolio`.`user` (
   `desabilitado` TINYINT NULL DEFAULT NULL,
   PRIMARY KEY (`usuario`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -248,16 +262,26 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `portafolio`.`user_role` (
   `usuario` VARCHAR(20) NOT NULL,
-  `rol` VARCHAR(20) NOT NULL COMMENT 'CUSTOMER\\nADMIN',
+  `rol` VARCHAR(20) NOT NULL COMMENT 'CUSTOMER\\\\nADMIN',
   `fecha_creacion` DATETIME NOT NULL,
   PRIMARY KEY (`usuario`, `rol`),
   CONSTRAINT `fk_usuario_rol_usuario1`
     FOREIGN KEY (`usuario`)
-    REFERENCES `portafolio`.`user` (`usuario`))
+    REFERENCES `portafolio`.`users` (`usuario`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+INSERT IGNORE INTO portafolio.users (usuario, contrasena, email, bloqueado, desabilitado) VALUES ('admin', '$2y$10$TjskTc1Nms0WGp4HCMdZ0eEb8NohnONsTSSM1yQxBFmBiSOx9KlGK', 'emanuelsierra17@gmail.com', '0', '0');
+INSERT IGNORE INTO portafolio.user_role (usuario, rol, fecha_creacion) VALUES ('admin', 'ADMIN', '2024-01-15 13:17:12');
+INSERT IGNORE INTO portafolio.imagenes (id_imagenes, nombre, formato, ruta) VALUES ('1', 'imagen', 'jpg', 'ruta');
+INSERT IGNORE INTO portafolio.categoria (id_categoria, nombre_categoria, descripcion_categoria, imagenes_id_fk) VALUES ('1', 'Tecnología', 'Tecnología', '1');
+INSERT IGNORE INTO portafolio.cartera (idCartera, valor_total, valor_descontar, valor_retirado, valor_recargado) VALUES ('1', '0', '0', '0', '0');
+INSERT IGNORE INTO portafolio.trabajadores (id_trabajador, nombres, apellidos, telefono, email, cedula, profesion, estado, estado_servicio, cartera_id_cartera) VALUES ('1', 'KaZia', 'Sierra', '3017768234', 'emanuelsierra17@gmail.com', '12350407178', 'Ingeniería de Sistemas', 'activo', 'no disponible', '1');
+INSERT IGNORE INTO portafolio.servicios (id_servicio, nombre_servicio, descripcion_servicio, categoria_id_fk, trabajador_id_fk) VALUES ('1', 'Mantenimiento de PC', 'mantenimiento de computadores', '1', '1');
