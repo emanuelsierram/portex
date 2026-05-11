@@ -1,0 +1,22 @@
+package com.portex.miexperiencia.infraestructura.adaptador.dao.usuario;
+
+import com.portex.miexperiencia.dominio.modelo.dto.DtoRol;
+import com.portex.compartido.infraestructura.jbdc.MapperResult;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+public class MapeoRoles implements RowMapper<DtoRol>, MapperResult{
+
+
+    @Override
+    public DtoRol mapRow(ResultSet rs, int rowNum) throws SQLException {
+        String usuario = rs.getString("usuario");
+        String rol = rs.getString("rol");
+        LocalDateTime fechaCreacion = extraerLocalDateTime(rs, "fecha_creacion");
+
+        return new DtoRol(usuario,rol,fechaCreacion);
+    }
+}
