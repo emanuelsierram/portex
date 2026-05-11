@@ -10,8 +10,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc:2.2.1.RELEASE'
+    implementation project.ext.springbootweb
+    implementation project.ext.springbootjdbc
     implementation 'com.auth0:java-jwt:4.3.0'
+    compileOnly project.ext.lombok
+    annotationProcessor project.ext.lombok
+    implementation project.ext.springbootsecurity
+
+
 
 
 

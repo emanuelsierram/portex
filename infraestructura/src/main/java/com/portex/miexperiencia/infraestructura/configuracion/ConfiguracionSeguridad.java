@@ -1,6 +1,6 @@
 package com.portex.miexperiencia.infraestructura.configuracion;
 
-import com.portex.miexperiencia.infraestructura.seguridad.jwt.JwtCustomFilter;
+import com.portex.compartido.infraestructura.seguridad.jwt.JwtCustomFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

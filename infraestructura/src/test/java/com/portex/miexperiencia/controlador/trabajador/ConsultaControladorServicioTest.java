@@ -1,6 +1,6 @@
 package com.portex.miexperiencia.controlador.trabajador;
 
-import com.portex.miexperiencia.ApplicationMock;
+import com.portex.ApplicationMock;
 import com.portex.miexperiencia.infraestructura.controlador.consulta.trabajador.ConsultaControladorTrabajador;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
