@@ -1,4 +1,4 @@
-package com.portex.miexperiencia.infraestructura;
+/*package com.portex.miexperiencia.infraestructura;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
@@ -35,3 +35,4 @@ public class DatabaseInitializer implements CommandLineRunner {
 }
 
 
+*/

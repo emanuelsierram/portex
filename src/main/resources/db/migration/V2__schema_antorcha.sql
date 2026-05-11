@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS mi_antorcha;
+
 CREATE TABLE mi_antorcha.miembros (
   id_miembro INT NOT NULL AUTO_INCREMENT,
   usuario_id VARCHAR(50) NOT NULL,
