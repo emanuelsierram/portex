@@ -26,8 +26,8 @@ public class MiembroTestDataBuilder {
         this.idAnciano = null;
     }
 
-    public MiembroTestDataBuilder conEmail(String email) {
-        this.email = email;
+    public MiembroTestDataBuilder conTelefono(String telefono) {
+        this.telefono = telefono;
         return this;
     }
 

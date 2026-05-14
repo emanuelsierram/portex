@@ -59,7 +59,7 @@ public class ComandoControladorMiembroTest {
 
         // Act & Assert
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/miembros")
+                        .post("/miembros")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN_PRUEBA)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(comando)))

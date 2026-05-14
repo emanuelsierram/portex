@@ -13,9 +13,9 @@ import java.util.List;
 public class RepositorioMiembroMysql implements RepositorioMiembro {
 
     private static final String SQL_CREAR = "INSERT INTO mi_antorcha.miembros (usuario_id, nombres, apellidos, email, telefono, perfil, id_grupo_pequeno, id_anciano, fecha_creacion, fecha_actualizacion) VALUES (:usuarioId, :nombres, :apellidos, :email, :telefono, :perfil, :idGrupoPequeno, :idAnciano, :fechaCreacion, :fechaActualizacion)";
-    private static final String SQL_ACTUALIZAR = "UPDATE mi_antorcha.miembros SET nombres = :nombres, apellidos = :apellidos, telefono = :telefono, perfil = :perfil, id_grupo_pequeno = :idGrupoPequeno, id_anciano = :idAnciano, fecha_actualizacion = :fechaActualizacion WHERE id_miembro = :id";
+    private static final String SQL_ACTUALIZAR = "UPDATE mi_antorcha.miembros SET nombres = :nombres, apellidos = :apellidos, email = :email, perfil = :perfil, id_grupo_pequeno = :idGrupoPequeno, id_anciano = :idAnciano, fecha_actualizacion = :fechaActualizacion WHERE id_miembro = :id";
     private static final String SQL_ELIMINAR = "DELETE FROM mi_antorcha.miembros WHERE id_miembro = :id";
-    private static final String SQL_EXISTE_EMAIL = "SELECT COUNT(1) FROM mi_antorcha.miembros WHERE email = :email";
+    private static final String SQL_EXISTE_TELEFONO = "SELECT COUNT(1) FROM mi_antorcha.miembros WHERE telefono = :telefono";
 
     private final CustomNamedParameterJdbcTemplate customJdbcTemplate;
 
@@ -40,9 +40,9 @@ public class RepositorioMiembroMysql implements RepositorioMiembro {
     }
 
     @Override
-    public boolean existeEmail(String email) {
-        MapSqlParameterSource parametros = new MapSqlParameterSource("email", email);
-        Integer count = this.customJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(SQL_EXISTE_EMAIL, parametros, Integer.class);
+    public boolean existeTelefono(String telefono) {
+        MapSqlParameterSource parametros = new MapSqlParameterSource("telefono", telefono);
+        Integer count = this.customJdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(SQL_EXISTE_TELEFONO, parametros, Integer.class);
         return count != null && count > 0;
     }
 

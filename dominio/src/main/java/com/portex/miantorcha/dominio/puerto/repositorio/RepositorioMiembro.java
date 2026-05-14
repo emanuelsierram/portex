@@ -8,7 +8,7 @@ public interface RepositorioMiembro {
     Long crear(Miembro miembro);
     void actualizar(Miembro miembro);
     void eliminar(Long id);
-    boolean existeEmail(String email);
+    boolean existeTelefono(String telefono);
     List<DtoMiembro> listar();
     DtoMiembro consultarPorId(Long id);
 }
