@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoMiembro, ComandoRespuesta<Long>> {
 
     private final ServicioCrearMiembro servicioCrearMiembro;
-    private final RepositorioUsuario repositorioUsuario;
     private final PasswordEncoder passwordEncoder;
     private final FabricaMiembro fabricaMiembro;
 
@@ -23,7 +22,6 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
                                  PasswordEncoder passwordEncoder,
                                  FabricaMiembro fabricaMiembro) {
         this.servicioCrearMiembro = servicioCrearMiembro;
-        this.repositorioUsuario = repositorioUsuario;
         this.passwordEncoder = passwordEncoder;
         this.fabricaMiembro = fabricaMiembro;
     }
@@ -38,10 +36,7 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
         String passCifrada = passwordEncoder.encode(comando.getContrasena());
         DtoUsuario usuarioSeguridad = new DtoUsuario(telefonoLimpio, passCifrada, comando.getEmail(), false, false);
 
-        this.repositorioUsuario.crear(usuarioSeguridad);
-        this.repositorioUsuario.asignarRol(telefonoLimpio, "USER"); // Asignamos el rol al teléfono
-
         Miembro miembro = this.fabricaMiembro.crear(comando);
-        return new ComandoRespuesta<>(this.servicioCrearMiembro.ejecutar(miembro));
+        return new ComandoRespuesta<>(this.servicioCrearMiembro.ejecutar(miembro, usuarioSeguridad, telefonoLimpio));
     }
 }

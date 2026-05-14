@@ -1,5 +1,6 @@
 package com.portex.miantorcha.infraestructura.configuracion;
 
+import com.portex.compartido.dominio.puerto.repositorio.RepositorioUsuario;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioMiembro;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioActualizarMiembro;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioCrearMiembro;
@@ -11,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class BeanServicioAntorcha {
 
     @Bean
-    public ServicioCrearMiembro servicioCrearMiembro(RepositorioMiembro repositorioMiembro) {
-        return new ServicioCrearMiembro(repositorioMiembro);
+    public ServicioCrearMiembro servicioCrearMiembro(RepositorioMiembro repositorioMiembro, RepositorioUsuario repositorioUsuario) {
+        return new ServicioCrearMiembro(repositorioMiembro, repositorioUsuario);
     }
 
     @Bean
