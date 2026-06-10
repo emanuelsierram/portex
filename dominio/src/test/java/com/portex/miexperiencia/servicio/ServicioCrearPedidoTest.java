@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -179,20 +180,30 @@ public class ServicioCrearPedidoTest {
     }
 
     @Test
-    public void validarNoAngendarDiaSabadoFechaInicial(){
+    public void validarNoAngendarDiaSabadoFechaInicial() {
+        LocalDateTime proximoSabado = LocalDateTime.now().plusMonths(1);
+        while (proximoSabado.getDayOfWeek() != DayOfWeek.SATURDAY) {
+            proximoSabado = proximoSabado.plusDays(1);
+        }
+
         PedidoTestDataBuilder pedidoTestDataBuilder = new PedidoTestDataBuilder().conFechas(
-                LocalDateTime.of(2025,3,29,13,30),
-                LocalDateTime.of(2025,4,21,11,30)
+                proximoSabado,
+                proximoSabado.plusDays(2) // Lunes
         );
         BasePrueba.assertThrows(()-> pedidoTestDataBuilder.build(), ExcepcionValorInvalido.class,"No se puede agendar en día sabado");
 
     }
 
     @Test
-    public void validarNoAngendarDiaSabadoFechaFinal(){
+    public void validarNoAngendarDiaSabadoFechaFinal() {
+        LocalDateTime proximoSabado = LocalDateTime.now().plusMonths(1);
+        while (proximoSabado.getDayOfWeek() != DayOfWeek.SATURDAY) {
+            proximoSabado = proximoSabado.plusDays(1);
+        }
+
         PedidoTestDataBuilder pedidoTestDataBuilder = new PedidoTestDataBuilder().conFechas(
-                LocalDateTime.of(2025,3,29,13,30),
-                LocalDateTime.of(2025,4,19,11,30)
+                proximoSabado.plusDays(2),
+                proximoSabado.plusDays(7)
         );
         BasePrueba.assertThrows(()-> pedidoTestDataBuilder.build(), ExcepcionValorInvalido.class,"No se puede agendar en día sabado");
 
