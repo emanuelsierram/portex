@@ -1,0 +1,44 @@
+package com.portex.miantorcha.infraestructura.configuracion;
+
+import com.portex.compartido.infraestructura.seguridad.jwt.JwtCustomFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@Order(1) // Prioridad alta para que evalúe sus rutas primero
+public class ConfiguracionSeguridadMA {
+
+    private final JwtCustomFilter jwtCustomFilter;
+
+    public ConfiguracionSeguridadMA(JwtCustomFilter jwtCustomFilter) {
+        this.jwtCustomFilter = jwtCustomFilter;
+    }
+
+    @Bean
+    public SecurityFilterChain filterChainAntorcha(HttpSecurity http) throws Exception {
+        http
+                // Indicamos que esta cadena SOLO aplica para las rutas de Mi Antorcha
+                .securityMatcher("/miembros/**")
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/miembros").permitAll()
+                        .anyRequest().authenticated()
+                )
+                // Reutilizamos tu filtro JWT existente
+                .addFilterBefore(jwtCustomFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+}

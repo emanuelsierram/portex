@@ -25,6 +25,8 @@ dependencies {
     testImplementation project.ext.flywaytest
     compileOnly project.ext.lombok
     annotationProcessor project.ext.lombok
+    implementation project.ext.flyway
+    implementation project.ext.flyway_mysql
 
 
 
