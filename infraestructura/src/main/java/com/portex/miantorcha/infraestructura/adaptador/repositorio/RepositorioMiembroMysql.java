@@ -54,7 +54,6 @@ public class RepositorioMiembroMysql implements RepositorioMiembro {
 
     @Override
     public DtoMiembro consultarPorId(Long id) {
-        // Consulta simple por ID
         return null;
     }
 }
