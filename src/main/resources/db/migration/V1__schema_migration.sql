@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS portafolio.categoria (
   descripcion_categoria VARCHAR(45) NOT NULL,
   imagenes_id_fk INT NOT NULL,
   PRIMARY KEY (id_categoria),
-  UNIQUE INDEX idx_imagenes (imagenes_id_fk),
+  CONSTRAINT idx_imagenes UNIQUE (imagenes_id_fk),
   CONSTRAINT fk_Categoria_Imagenes1
     FOREIGN KEY (imagenes_id_fk)
     REFERENCES portafolio.imagenes (id_imagenes)
@@ -91,9 +91,9 @@ CREATE TABLE IF NOT EXISTS portafolio.trabajadores (
   estado_servicio VARCHAR(45) NOT NULL,
   cartera_id_cartera INT NOT NULL,
   PRIMARY KEY (id_trabajador),
-  UNIQUE INDEX cedula_UNIQUE (cedula),
-  UNIQUE INDEX email_UNIQUE (email),
-  UNIQUE INDEX telefono_UNIQUE (telefono),
+  CONSTRAINT cedula_UNIQUE UNIQUE (cedula),
+  CONSTRAINT email_UNIQUE UNIQUE (email),
+  CONSTRAINT telefono_UNIQUE UNIQUE (telefono),
   CONSTRAINT fk_Trabajadores_Cartera1
     FOREIGN KEY (cartera_id_cartera)
     REFERENCES portafolio.cartera (idCartera)

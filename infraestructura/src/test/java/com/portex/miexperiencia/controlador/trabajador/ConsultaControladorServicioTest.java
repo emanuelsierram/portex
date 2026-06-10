@@ -1,7 +1,9 @@
 package com.portex.miexperiencia.controlador.trabajador;
 
 import com.portex.ApplicationMock;
+import com.portex.compartido.infraestructura.seguridad.jwt.JwtTokenManager;
 import com.portex.miexperiencia.infraestructura.controlador.consulta.trabajador.ConsultaControladorTrabajador;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +30,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 public class ConsultaControladorServicioTest {
 
-    private final static String TOKEN_PRUEBA="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlzcyI6ImVtYW51ZWxzaWVycmExNyIsImV4cCI6MTczODc3MjMxOCwiaWF0IjoxNzM3NDc2MzE4fQ._K1yF6uMbzBiDCoGnhMdcgCTsO67HwV1W1duZ0v6S7Q";
+    private String tokenPrueba;
+
     private final static String CEDULA="12350407178";
     @Autowired
     private MockMvc mockMvc;
 
+    @BeforeEach
+    public void setUp() {
+        JwtTokenManager jwtTokenManager = new JwtTokenManager();
+        this.tokenPrueba = jwtTokenManager.crear("admin");
+    }
 
     @Test
     public void listarServiciosTest() throws Exception {
 
         mockMvc.perform(get("/servicios")
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + TOKEN_PRUEBA)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenPrueba)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -52,7 +60,7 @@ public class ConsultaControladorServicioTest {
     @Test
     public void consultarServiciosPorTrabajador() throws Exception {
         mockMvc.perform(get("/servicios/trabajador/{id}",1L)
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer "+TOKEN_PRUEBA)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer "+tokenPrueba)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -62,7 +70,7 @@ public class ConsultaControladorServicioTest {
     @Test
     public void consultarServiciosPorId() throws Exception {
         mockMvc.perform(get("/servicios/{id}",1L)
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer "+TOKEN_PRUEBA)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer "+tokenPrueba)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L));
