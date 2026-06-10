@@ -17,13 +17,17 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
     private final PasswordEncoder passwordEncoder;
     private final FabricaMiembro fabricaMiembro;
 
+    private final RepositorioUsuario repositorioUsuario;
+
+
     public ManejadorCrearMiembro(ServicioCrearMiembro servicioCrearMiembro,
-                                 RepositorioUsuario repositorioUsuario,
                                  PasswordEncoder passwordEncoder,
-                                 FabricaMiembro fabricaMiembro) {
+                                 FabricaMiembro fabricaMiembro,
+                                 RepositorioUsuario repositorioUsuario) {
         this.servicioCrearMiembro = servicioCrearMiembro;
         this.passwordEncoder = passwordEncoder;
         this.fabricaMiembro = fabricaMiembro;
+        this.repositorioUsuario = repositorioUsuario;
     }
 
     @Override
@@ -36,7 +40,11 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
         String passCifrada = passwordEncoder.encode(comando.getContrasena());
         DtoUsuario usuarioSeguridad = new DtoUsuario(telefonoLimpio, passCifrada, comando.getEmail(), false, false);
 
+        this.repositorioUsuario.crear(usuarioSeguridad);
+        this.repositorioUsuario.asignarRol(telefonoLimpio, "USER");
+
+
         Miembro miembro = this.fabricaMiembro.crear(comando);
-        return new ComandoRespuesta<>(this.servicioCrearMiembro.ejecutar(miembro, usuarioSeguridad, telefonoLimpio));
+        return new ComandoRespuesta<>(this.servicioCrearMiembro.ejecutar(miembro));
     }
 }

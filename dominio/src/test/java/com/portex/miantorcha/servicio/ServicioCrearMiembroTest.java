@@ -19,13 +19,10 @@ public class ServicioCrearMiembroTest {
     private RepositorioMiembro repositorioMiembro;
     private ServicioCrearMiembro servicioCrearMiembro;
 
-    private RepositorioUsuario repositorioUsuario;
-
-
     @BeforeEach
     public void setup() {
         repositorioMiembro = Mockito.mock(RepositorioMiembro.class);
-        servicioCrearMiembro = new ServicioCrearMiembro(repositorioMiembro, repositorioUsuario);
+        servicioCrearMiembro = new ServicioCrearMiembro(repositorioMiembro);
     }
 
     @Test
@@ -49,9 +46,9 @@ public class ServicioCrearMiembroTest {
     public void validarFallaPorEmailDuplicado() {
         // Arrange
         Miembro miembro = new MiembroTestDataBuilder().conTelefono("duplicado@email.com").build();
-        Mockito.when(repositorioMiembro.existeTelefono(miembro.getEmail())).thenReturn(true);
+        Mockito.when(repositorioMiembro.existeTelefono(miembro.getTelefono())).thenReturn(true);
 
-        // Act & Assert (Utilizando tu BasePrueba)
+        // Act & Assert
         BasePrueba.assertThrows(() -> servicioCrearMiembro.ejecutar(miembro),
                 ExcepcionDuplicidad.class,
                 "Ya existe un miembro registrado con este telefono");
