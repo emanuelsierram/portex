@@ -61,9 +61,9 @@ public class ConsultaControladorEstudioBiblicoTest {
     @Test
     void consultarActualesPorMiembroExitoso() throws Exception {
         // Arrange
-        Long idUsuarioAsignado = 123L;
+        String usuarioId = "usuario-prueba";
 
-        when(seguridadMiembro.puedeConsultarPorId(eq(idUsuarioAsignado), any())).thenReturn(true);
+        when(seguridadMiembro.puedeConsultarPorUsuarioId(eq(usuarioId), any())).thenReturn(true);
 
         DtoEstudioBiblico dto1 = new DtoEstudioBiblico();
         dto1.setId(1L);
@@ -75,11 +75,11 @@ public class ConsultaControladorEstudioBiblicoTest {
 
         List<DtoEstudioBiblico> respuestaSimulada = Arrays.asList(dto1, dto2);
 
-        when(manejadorListarEstudioBiblico.consultarActualesPorMiembro(idUsuarioAsignado))
+        when(manejadorListarEstudioBiblico.consultarActualesPorMiembro(usuarioId))
                 .thenReturn(respuestaSimulada);
 
         // Act & Assert
-        mockMvc.perform(get("/api/estudios-biblicos/actuales/" + idUsuarioAsignado)
+        mockMvc.perform(get("/api/estudios-biblicos/actuales/" + usuarioId)
                         .header("Authorization", "Bearer " + this.tokenPrueba)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

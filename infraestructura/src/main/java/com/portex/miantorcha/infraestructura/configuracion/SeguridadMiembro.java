@@ -28,4 +28,16 @@ public class SeguridadMiembro {
                 && miembro.getUsuarioId() != null
                 && miembro.getUsuarioId().equals(authentication.getName());
     }
+
+    public boolean puedeConsultarPorUsuarioId(String usuarioId, Authentication authentication) {
+        if (usuarioId == null || authentication == null || !authentication.isAuthenticated()) {
+            return false;
+        }
+
+        if (authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return true;
+        }
+
+        return usuarioId.equals(authentication.getName());
+    }
 }

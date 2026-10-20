@@ -23,10 +23,10 @@ public class ConsultaControladorEstudioBiblico {
         this.seguridadEstudio = seguridadEstudio;
     }
 
-    @GetMapping("/actuales/{idUsuarioAsignado}")
-    @PreAuthorize("@seguridadMiembro.puedeConsultarPorId(#idUsuarioAsignado, authentication)")
-    public List<DtoEstudioBiblico> consultarActualesPorMiembro(@PathVariable Long idUsuarioAsignado) {
-        return this.manejadorListarEstudioBiblico.consultarActualesPorMiembro(idUsuarioAsignado);
+    @GetMapping("/actuales/{usuarioId}")
+    @PreAuthorize("@seguridadMiembro.puedeConsultarPorUsuarioId(#usuarioId, authentication)")
+    public List<DtoEstudioBiblico> consultarActualesPorMiembro(@PathVariable String usuarioId) {
+        return this.manejadorListarEstudioBiblico.consultarActualesPorMiembro(usuarioId);
     }
     @GetMapping("/disponibles")
     public List<DtoEstudioBiblico> consultarDisponiblesPorDar() {
