@@ -12,6 +12,8 @@ import com.portex.miantorcha.infraestructura.controlador.comando.estudio.Comando
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ManejadorActualizarEstudioBiblico;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ManejadorEliminarEstudioBiblico;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ManejadorRegistrarLeccion;
+import com.portex.miantorcha.dominio.modelo.dto.DtoMiembro;
+import com.portex.miantorcha.dominio.puerto.dao.DaoMiembro;
 import com.portex.miantorcha.testdatabuilder.ComandoEstudioBiblicoTestDataBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +64,9 @@ public class ComandoControladorEstudioBiblicoTest {
     @MockBean
     private ManejadorRegistrarLeccion manejadorRegistrarLeccion;
 
+    @MockBean
+    private DaoMiembro daoMiembro;
+
     @BeforeEach
     public void setUp() {
         JwtTokenManager jwtTokenManager = new JwtTokenManager();
@@ -72,6 +77,9 @@ public class ComandoControladorEstudioBiblicoTest {
     void crearEstudioBiblicoExitoso() throws Exception {
         // Arrange
         ComandoEstudioBiblico comando = new ComandoEstudioBiblicoTestDataBuilder().build();
+        DtoMiembro miembro = org.mockito.Mockito.mock(DtoMiembro.class);
+        when(miembro.getId()).thenReturn(20L);
+        when(daoMiembro.consultarPorUsuarioId(comando.getIdUsuarioAsignado())).thenReturn(miembro);
 
         // Act & Assert
         mockMvc.perform(post("/api/estudios-biblicos")

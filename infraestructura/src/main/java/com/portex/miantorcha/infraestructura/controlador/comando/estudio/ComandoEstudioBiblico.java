@@ -11,7 +11,7 @@ public class ComandoEstudioBiblico {
     private String telefonoPersona;
     private String direccionPersona;
     private String estado;
-    private Long idUsuarioAsignado;
+    private String idUsuarioAsignado;
     private String personaQueReporta;
     private Long idGrupo;
 

@@ -10,7 +10,7 @@ public class ComandoEstudioBiblicoTestDataBuilder {
     private String telefonoPersona;
     private String direccionPersona;
     private String estado;
-    private Long idUsuarioAsignado;
+    private String idUsuarioAsignado;
     private String personaQueReporta;
     private Long idGrupo;
 
@@ -20,7 +20,7 @@ public class ComandoEstudioBiblicoTestDataBuilder {
         this.telefonoPersona = "3009876543";
         this.direccionPersona = "Avenida Siempre Viva 742";
         this.estado = "por dar";
-        this.idUsuarioAsignado = 20L;
+        this.idUsuarioAsignado = "20";
         this.personaQueReporta = "Reportador Test";
         this.idGrupo = 5L;
     }
