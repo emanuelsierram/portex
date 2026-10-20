@@ -58,7 +58,7 @@ public class ManejadorRegistrarLeccion {
         comando.setTelefonoPersona(dto.getTelefonoPersona());
         comando.setDireccionPersona(dto.getDireccionPersona());
         comando.setEstado(dto.getEstado());
-        comando.setIdUsuarioAsignado(dto.getIdUsuarioAsignado());
+        comando.setIdUsuarioAsignado(String.valueOf(dto.getIdUsuarioAsignado()));
         comando.setPersonaQueReporta(dto.getPersonaQueReporta());
         comando.setIdGrupo(dto.getIdGrupo());
         return comando;

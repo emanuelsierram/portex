@@ -1,6 +1,7 @@
 package com.portex.miantorcha.infraestructura.configuracion;
 
 import com.portex.miantorcha.dominio.puerto.dao.DaoEstudioBiblico;
+import com.portex.miantorcha.dominio.puerto.dao.DaoMiembro;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioEstudioBiblico;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioMiembro;
 import com.portex.miantorcha.dominio.servicio.estudio.ServicioActualizarEstudioBiblico;
@@ -30,8 +31,8 @@ public class BeanServicioAntorcha {
     }
 
     @Bean
-    public ServicioCrearEstudioBiblico servicioCrearEstudioBiblico(RepositorioEstudioBiblico repositorioEstudioBiblico, DaoEstudioBiblico daoEstudioBiblico) {
-        return new ServicioCrearEstudioBiblico(daoEstudioBiblico, repositorioEstudioBiblico);
+    public ServicioCrearEstudioBiblico servicioCrearEstudioBiblico(RepositorioEstudioBiblico repositorioEstudioBiblico, DaoEstudioBiblico daoEstudioBiblico, DaoMiembro daoMiembro) {
+        return new ServicioCrearEstudioBiblico(daoEstudioBiblico, daoMiembro, repositorioEstudioBiblico);
     }
 
     @Bean

@@ -16,6 +16,9 @@ public class ManejadorCrearEstudioBiblico {
     }
 
     public ComandoRespuesta<Long> ejecutar(ComandoEstudioBiblico comando) {
-        return new ComandoRespuesta<>(this.servicioCrearEstudioBiblico.ejecutar(this.fabricaEstudioBiblico.crear(comando)));
+        return new ComandoRespuesta<>(this.servicioCrearEstudioBiblico.ejecutar(
+                this.fabricaEstudioBiblico.crear(comando),
+                comando.getIdUsuarioAsignado()
+        ));
     }
 }

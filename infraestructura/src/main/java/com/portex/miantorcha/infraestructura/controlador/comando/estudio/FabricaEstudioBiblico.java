@@ -7,13 +7,17 @@ import org.springframework.stereotype.Component;
 public class FabricaEstudioBiblico {
 
     public EstudioBiblico crear(ComandoEstudioBiblico comando) {
+        return crear(comando, null);
+    }
+
+    public EstudioBiblico crear(ComandoEstudioBiblico comando, Long idUsuarioAsignado) {
         return new EstudioBiblico(
                 comando.getId(),
                 comando.getNombrePersona(),
                 comando.getTelefonoPersona(),
                 comando.getDireccionPersona(),
                 comando.getEstado(),
-                comando.getIdUsuarioAsignado(),
+                idUsuarioAsignado,
                 comando.getPersonaQueReporta(),
                 comando.getIdGrupo()
         );
