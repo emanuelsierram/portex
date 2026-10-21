@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,5 +24,8 @@ public class DtoEstudioBiblico {
     private Long idUsuarioAsignado;
     private String personaQueReporta;
     private Long idGrupo;
+    private String frecuencia;
+    private LocalDate fechaInicializacion;
+    private LocalDateTime fechaRegistro;
 
 }
