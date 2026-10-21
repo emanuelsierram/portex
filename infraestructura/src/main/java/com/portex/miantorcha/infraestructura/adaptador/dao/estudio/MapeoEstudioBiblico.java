@@ -5,6 +5,8 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class MapeoEstudioBiblico implements RowMapper<DtoEstudioBiblico> {
 
@@ -20,6 +22,9 @@ public class MapeoEstudioBiblico implements RowMapper<DtoEstudioBiblico> {
         dto.setPersonaQueReporta(rs.getString("persona_que_reporta"));
         dto.setIdUsuarioAsignado(rs.getObject("id_usuario_asignado", Long.class));
         dto.setIdGrupo(rs.getObject("id_grupo", Long.class));
+        dto.setFrecuencia(rs.getString("frecuencia"));
+        dto.setFechaInicializacion(rs.getObject("fecha_inicializacion", LocalDate.class));
+        dto.setFechaRegistro(rs.getObject("fecha_registro", LocalDateTime.class));
         return dto;
     }
 }

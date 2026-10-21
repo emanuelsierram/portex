@@ -2,6 +2,8 @@ package com.portex.miantorcha.testdatabuilder;
 
 import com.portex.miantorcha.dominio.modelo.entidad.EstudioBiblico;
 
+import java.time.LocalDate;
+
 public class EstudioBiblicoTestDataBuilder {
 
     private Long id;
@@ -12,6 +14,8 @@ public class EstudioBiblicoTestDataBuilder {
     private Long idUsuarioAsignado;
     private String personaQueReporta;
     private Long idGrupo;
+    private String frecuencia;
+    private LocalDate fechaInicializacion;
 
     public EstudioBiblicoTestDataBuilder() {
         this.id = 1L;
@@ -21,7 +25,10 @@ public class EstudioBiblicoTestDataBuilder {
         this.estado = "por dar";
         this.idUsuarioAsignado = 100L;
         this.personaQueReporta = "Maria Gomez";
-        this.idGrupo = 50L;    }
+        this.idGrupo = 50L;
+        this.frecuencia = "Semanal";
+        this.fechaInicializacion = LocalDate.of(2026, 10, 20);
+    }
 
     public EstudioBiblicoTestDataBuilder conNombrePersona(String nombrePersona) {
         this.nombrePersona = nombrePersona;
@@ -45,6 +52,7 @@ public class EstudioBiblicoTestDataBuilder {
 
     public EstudioBiblico build() {
         return new EstudioBiblico(id, nombrePersona, telefonoPersona, direccionPersona,
-                estado, idUsuarioAsignado, personaQueReporta, idGrupo);
+                estado, idUsuarioAsignado, personaQueReporta, idGrupo, frecuencia,
+                fechaInicializacion, null);
     }
 }
