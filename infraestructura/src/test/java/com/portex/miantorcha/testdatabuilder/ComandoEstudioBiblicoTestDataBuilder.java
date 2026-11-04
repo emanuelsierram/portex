@@ -1,6 +1,8 @@
 package com.portex.miantorcha.testdatabuilder;
 
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ComandoEstudioBiblico;
+
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class ComandoEstudioBiblicoTestDataBuilder {
@@ -13,6 +15,8 @@ public class ComandoEstudioBiblicoTestDataBuilder {
     private String idUsuarioAsignado;
     private String personaQueReporta;
     private Long idGrupo;
+    private String frecuencia;
+    private LocalDate fechaInicializacion;
 
     public ComandoEstudioBiblicoTestDataBuilder() {
         this.id = 1L;
@@ -23,6 +27,8 @@ public class ComandoEstudioBiblicoTestDataBuilder {
         this.idUsuarioAsignado = "20";
         this.personaQueReporta = "Reportador Test";
         this.idGrupo = 5L;
+        this.frecuencia = "Semanal";
+        this.fechaInicializacion = LocalDate.of(2026, 10, 20);
     }
 
     public ComandoEstudioBiblicoTestDataBuilder conDireccionPersona(String direccionPersona) {
@@ -40,6 +46,8 @@ public class ComandoEstudioBiblicoTestDataBuilder {
         comando.setIdUsuarioAsignado(this.idUsuarioAsignado);
         comando.setPersonaQueReporta(this.personaQueReporta);
         comando.setIdGrupo(this.idGrupo);
+        comando.setFrecuencia(this.frecuencia);
+        comando.setFechaInicializacion(this.fechaInicializacion);
         return comando;
     }
 }

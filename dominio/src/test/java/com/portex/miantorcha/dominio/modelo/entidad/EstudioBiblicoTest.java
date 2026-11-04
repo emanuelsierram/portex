@@ -4,6 +4,8 @@ import com.portex.compartido.dominio.excepcion.ExcepcionValorObligatorio;
 import com.portex.miantorcha.testdatabuilder.EstudioBiblicoTestDataBuilder;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EstudioBiblicoTest {
@@ -17,6 +19,39 @@ class EstudioBiblicoTest {
         assertNotNull(estudio);
         assertEquals("Juan Perez", estudio.getNombrePersona());
         assertEquals("por dar", estudio.getEstado());
+    }
+
+    @Test
+    void crearEstudioBiblicoConFrecuenciaYFechas() {
+        LocalDate fechaInicializacion = LocalDate.of(2026, 11, 3);
+
+        EstudioBiblico estudio = new EstudioBiblicoTestDataBuilder()
+                .conFrecuencia("Semanal")
+                .conFechaInicializacion(fechaInicializacion)
+                .build();
+
+        assertEquals("Semanal", estudio.getFrecuencia());
+        assertEquals(fechaInicializacion, estudio.getFechaInicializacion());
+        assertNull(estudio.getFechaRegistro());
+    }
+
+    @Test
+    void normalizarFrecuenciaIgnorandoMayusculasYEspacios() {
+        EstudioBiblico estudio = new EstudioBiblicoTestDataBuilder()
+                .conFrecuencia("  diario ")
+                .build();
+
+        assertEquals("Diario", estudio.getFrecuencia());
+    }
+
+    @Test
+    void validarFrecuenciaNoPermitida() {
+        EstudioBiblicoTestDataBuilder builder = new EstudioBiblicoTestDataBuilder()
+                .conFrecuencia("Quincenal");
+
+        IllegalArgumentException excepcion = assertThrows(IllegalArgumentException.class, builder::build);
+
+        assertEquals("Frecuencia de estudio bíblico no válida: Quincenal", excepcion.getMessage());
     }
 
     @Test

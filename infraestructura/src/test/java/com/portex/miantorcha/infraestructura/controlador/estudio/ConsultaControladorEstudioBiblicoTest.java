@@ -20,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -68,6 +69,9 @@ public class ConsultaControladorEstudioBiblicoTest {
         DtoEstudioBiblico dto1 = new DtoEstudioBiblico();
         dto1.setId(1L);
         dto1.setNombrePersona("Maria Test");
+        dto1.setFrecuencia("Semanal");
+        dto1.setFechaInicializacion(LocalDate.of(2026, 11, 3));
+        dto1.setFechaRegistro(LocalDateTime.of(2026, 11, 3, 19, 0));
 
         DtoEstudioBiblico dto2 = new DtoEstudioBiblico();
         dto2.setId(2L);
@@ -85,6 +89,9 @@ public class ConsultaControladorEstudioBiblicoTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].nombrePersona").value("Maria Test"))
+                .andExpect(jsonPath("$[0].frecuencia").value("Semanal"))
+                .andExpect(jsonPath("$[0].fechaInicializacion").value("2026-11-03"))
+                .andExpect(jsonPath("$[0].fechaRegistro").value("2026-11-03T19:00:00"))
                 .andExpect(jsonPath("$[1].nombrePersona").value("Jose Test"));
     }
 
@@ -121,7 +128,8 @@ public class ConsultaControladorEstudioBiblicoTest {
                 1,
                 idEstudio,
                 LocalDateTime.now(),
-                99L
+                99L,
+                "Repaso completado"
         );
 
         List<DtoHistoricoLeccion> respuestaSimulada = List.of(leccion);
@@ -138,6 +146,7 @@ public class ConsultaControladorEstudioBiblicoTest {
                 .andExpect(jsonPath("$[0].id").value(100))
                 .andExpect(jsonPath("$[0].contadorSemana").value(1))
                 .andExpect(jsonPath("$[0].idEstudioBiblico").value(15))
-                .andExpect(jsonPath("$[0].idActividad").value(99));
+                .andExpect(jsonPath("$[0].idActividad").value(99))
+                .andExpect(jsonPath("$[0].observacion").value("Repaso completado"));
     }
 }

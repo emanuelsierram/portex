@@ -19,7 +19,10 @@ public class FabricaEstudioBiblico {
                 comando.getEstado(),
                 idUsuarioAsignado,
                 comando.getPersonaQueReporta(),
-                comando.getIdGrupo()
+                comando.getIdGrupo(),
+                comando.getFrecuencia(),
+                comando.getFechaInicializacion(),
+                null
         );
     }
 }

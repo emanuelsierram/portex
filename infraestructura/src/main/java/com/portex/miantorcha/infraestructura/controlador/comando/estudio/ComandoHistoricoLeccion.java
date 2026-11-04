@@ -11,4 +11,5 @@ public class ComandoHistoricoLeccion {
     private Long idEstudioBiblico;
     private LocalDateTime fechaEstudio;
     private Long idActividad;
+    private String observacion;
 }

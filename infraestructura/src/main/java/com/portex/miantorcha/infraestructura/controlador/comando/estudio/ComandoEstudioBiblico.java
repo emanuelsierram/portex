@@ -3,6 +3,8 @@ package com.portex.miantorcha.infraestructura.controlador.comando.estudio;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 public class ComandoEstudioBiblico {
@@ -14,5 +16,7 @@ public class ComandoEstudioBiblico {
     private String idUsuarioAsignado;
     private String personaQueReporta;
     private Long idGrupo;
+    private String frecuencia;
+    private LocalDate fechaInicializacion;
 
 }

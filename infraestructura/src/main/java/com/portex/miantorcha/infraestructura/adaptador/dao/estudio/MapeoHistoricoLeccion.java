@@ -16,6 +16,7 @@ public class MapeoHistoricoLeccion implements RowMapper<DtoHistoricoLeccion> {
         dto.setIdEstudioBiblico(rs.getObject("id_estudio_biblico", Long.class));
         dto.setFechaEstudio(rs.getTimestamp("fecha_estudio").toLocalDateTime());
         dto.setIdActividad(rs.getObject("id_actividad", Long.class));
+        dto.setObservacion(rs.getString("observacion"));
         return dto;
     }
 }

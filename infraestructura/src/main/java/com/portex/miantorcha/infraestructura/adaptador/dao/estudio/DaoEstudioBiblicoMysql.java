@@ -59,7 +59,7 @@ public class DaoEstudioBiblicoMysql implements DaoEstudioBiblico {
 
     @Override
     public List<DtoHistoricoLeccion> consultarHistoricoPorEstudio(Long idEstudioBiblico) {
-        String sql = "SELECT id, contador_semana, id_estudio_biblico, fecha_estudio, id_actividad " +
+        String sql = "SELECT id, contador_semana, id_estudio_biblico, fecha_estudio, id_actividad, observacion " +
                 "FROM mi_antorcha.historico_lecciones WHERE id_estudio_biblico = :idEstudioBiblico " +
                 "ORDER BY contador_semana ASC";
 

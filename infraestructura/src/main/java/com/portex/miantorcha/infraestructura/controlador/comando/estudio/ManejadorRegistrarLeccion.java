@@ -38,7 +38,8 @@ public class ManejadorRegistrarLeccion {
 
         // 2. Reutilizamos la FabricaEstudioBiblico convirtiendo el DTO en un Comando para reconstruir la entidad
         ComandoEstudioBiblico comandoEstudio = mapearDtoAComando(dto);
-        EstudioBiblico estudioBiblico = this.fabricaEstudioBiblico.crear(comandoEstudio);
+        EstudioBiblico estudioBiblico = this.fabricaEstudioBiblico.crear(
+                comandoEstudio, dto.getIdUsuarioAsignado());
         estudioBiblico.asignarLeccionCalculada(dto.getLeccion());
 
         // 3. Traducimos el comando del histórico usando su fábrica dedicada
@@ -61,6 +62,8 @@ public class ManejadorRegistrarLeccion {
         comando.setIdUsuarioAsignado(String.valueOf(dto.getIdUsuarioAsignado()));
         comando.setPersonaQueReporta(dto.getPersonaQueReporta());
         comando.setIdGrupo(dto.getIdGrupo());
+        comando.setFrecuencia(dto.getFrecuencia());
+        comando.setFechaInicializacion(dto.getFechaInicializacion());
         return comando;
     }
 }

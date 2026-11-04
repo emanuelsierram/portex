@@ -4,6 +4,9 @@ import com.portex.compartido.dominio.ValidadorArgumento;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class EstudioBiblico {
@@ -17,11 +20,23 @@ public class EstudioBiblico {
     private Long idUsuarioAsignado;
     private String personaQueReporta;
     private Long idGrupo;
+    private String frecuencia;
+    private LocalDate fechaInicializacion;
+    private LocalDateTime fechaRegistro;
 
     public EstudioBiblico(Long id, String nombrePersona, String telefonoPersona,
                           String direccionPersona, String estado,
                           Long idUsuarioAsignado, String personaQueReporta,
                           Long idGrupo) {
+        this(id, nombrePersona, telefonoPersona, direccionPersona, estado,
+                idUsuarioAsignado, personaQueReporta, idGrupo, null, null, null);
+    }
+
+    public EstudioBiblico(Long id, String nombrePersona, String telefonoPersona,
+                          String direccionPersona, String estado,
+                          Long idUsuarioAsignado, String personaQueReporta,
+                          Long idGrupo, String frecuencia, LocalDate fechaInicializacion,
+                          LocalDateTime fechaRegistro) {
 
         // Reglas de negocio: Validaciones obligatorias
         ValidadorArgumento.validarObligatorio(nombrePersona, "El nombre de la persona es obligatorio");
@@ -35,6 +50,10 @@ public class EstudioBiblico {
         this.idUsuarioAsignado = idUsuarioAsignado;
         this.personaQueReporta = personaQueReporta;
         this.idGrupo = idGrupo;
+        this.frecuencia = frecuencia == null || frecuencia.trim().isEmpty()
+                ? null : FrecuenciaEstudioBiblico.desdeValor(frecuencia).getValor();
+        this.fechaInicializacion = fechaInicializacion;
+        this.fechaRegistro = fechaRegistro;
     }
 
     // Método para inyectar el valor calculado de la lección tras aplicar la lógica
