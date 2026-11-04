@@ -50,6 +50,16 @@ public class EstudioBiblicoTestDataBuilder {
         return this;
     }
 
+    public EstudioBiblicoTestDataBuilder conFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
+        return this;
+    }
+
+    public EstudioBiblicoTestDataBuilder conFechaInicializacion(LocalDate fechaInicializacion) {
+        this.fechaInicializacion = fechaInicializacion;
+        return this;
+    }
+
     public EstudioBiblico build() {
         return new EstudioBiblico(id, nombrePersona, telefonoPersona, direccionPersona,
                 estado, idUsuarioAsignado, personaQueReporta, idGrupo, frecuencia,
