@@ -20,6 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -68,6 +69,9 @@ public class ConsultaControladorEstudioBiblicoTest {
         DtoEstudioBiblico dto1 = new DtoEstudioBiblico();
         dto1.setId(1L);
         dto1.setNombrePersona("Maria Test");
+        dto1.setFrecuencia("Semanal");
+        dto1.setFechaInicializacion(LocalDate.of(2026, 11, 3));
+        dto1.setFechaRegistro(LocalDateTime.of(2026, 11, 3, 19, 0));
 
         DtoEstudioBiblico dto2 = new DtoEstudioBiblico();
         dto2.setId(2L);
@@ -85,6 +89,9 @@ public class ConsultaControladorEstudioBiblicoTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].nombrePersona").value("Maria Test"))
+                .andExpect(jsonPath("$[0].frecuencia").value("Semanal"))
+                .andExpect(jsonPath("$[0].fechaInicializacion").value("2026-11-03"))
+                .andExpect(jsonPath("$[0].fechaRegistro").value("2026-11-03T19:00:00"))
                 .andExpect(jsonPath("$[1].nombrePersona").value("Jose Test"));
     }
 
