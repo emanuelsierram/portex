@@ -2,6 +2,7 @@ package com.portex.miexperiencia.testdatabuilder;
 
 import com.portex.miexperiencia.dominio.modelo.entidad.Pedido;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 public class PedidoTestDataBuilder {
@@ -24,12 +25,19 @@ public class PedidoTestDataBuilder {
         descripcion="Descripción de prueba";
         estado="solicitado";
         fechaCreacion=LocalDateTime.now();
-        fechaInicio= LocalDateTime.of(2026, 8, 12, 8, 15);
-        fechaFinal= LocalDateTime.of(2026, 11, 11, 8, 15);
+        fechaInicio = proximaFechaLaborable(LocalDateTime.now().plusMonths(1));
+        fechaFinal = proximaFechaLaborable(fechaInicio.plusMonths(3));
         presupuesto=100.0;
         idCliente=1L;
         idTrabajador=1L;
         idValoracion=1L;
+    }
+
+    private LocalDateTime proximaFechaLaborable(LocalDateTime fecha) {
+        while (fecha.getDayOfWeek() == DayOfWeek.SATURDAY) {
+            fecha = fecha.plusDays(1);
+        }
+        return fecha;
     }
 
     public PedidoTestDataBuilder conFechas(LocalDateTime fechaInicio, LocalDateTime fechaFinal){

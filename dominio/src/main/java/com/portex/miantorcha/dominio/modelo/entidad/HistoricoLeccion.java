@@ -12,9 +12,10 @@ public class HistoricoLeccion {
     private Long idEstudioBiblico;
     private LocalDateTime fechaEstudio;
     private Long idActividad;
+    private String observacion;
 
     public HistoricoLeccion(Long id, Integer contadorSemana, Long idEstudioBiblico,
-                            LocalDateTime fechaEstudio, Long idActividad) {
+                            LocalDateTime fechaEstudio, Long idActividad, String observacion) {
 
         ValidadorArgumento.validarObligatorio(contadorSemana, "El contador de la semana es obligatorio");
         ValidadorArgumento.validarObligatorio(idEstudioBiblico, "El ID del estudio bíblico es obligatorio");
@@ -26,5 +27,11 @@ public class HistoricoLeccion {
         this.idEstudioBiblico = idEstudioBiblico;
         this.fechaEstudio = fechaEstudio;
         this.idActividad = idActividad;
+        this.observacion = observacion;
+    }
+
+    public HistoricoLeccion(Long id, Integer contadorSemana, Long idEstudioBiblico,
+                            LocalDateTime fechaEstudio, Long idActividad) {
+        this(id, contadorSemana, idEstudioBiblico, fechaEstudio, idActividad, null);
     }
 }
