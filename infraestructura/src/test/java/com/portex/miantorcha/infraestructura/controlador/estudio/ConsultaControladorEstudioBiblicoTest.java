@@ -121,7 +121,8 @@ public class ConsultaControladorEstudioBiblicoTest {
                 1,
                 idEstudio,
                 LocalDateTime.now(),
-                99L
+                99L,
+                "Repaso completado"
         );
 
         List<DtoHistoricoLeccion> respuestaSimulada = List.of(leccion);
@@ -138,6 +139,7 @@ public class ConsultaControladorEstudioBiblicoTest {
                 .andExpect(jsonPath("$[0].id").value(100))
                 .andExpect(jsonPath("$[0].contadorSemana").value(1))
                 .andExpect(jsonPath("$[0].idEstudioBiblico").value(15))
-                .andExpect(jsonPath("$[0].idActividad").value(99));
+                .andExpect(jsonPath("$[0].idActividad").value(99))
+                .andExpect(jsonPath("$[0].observacion").value("Repaso completado"));
     }
 }

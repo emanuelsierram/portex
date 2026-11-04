@@ -16,4 +16,10 @@ public class DtoHistoricoLeccion {
     private Long idEstudioBiblico;
     private LocalDateTime fechaEstudio;
     private Long idActividad;
+    private String observacion;
+
+    public DtoHistoricoLeccion(Long id, Integer contadorSemana, Long idEstudioBiblico,
+                               LocalDateTime fechaEstudio, Long idActividad) {
+        this(id, contadorSemana, idEstudioBiblico, fechaEstudio, idActividad, null);
+    }
 }

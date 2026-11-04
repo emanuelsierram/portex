@@ -44,8 +44,8 @@ public class RepositorioEstudioBiblicoMysql implements RepositorioEstudioBiblico
 
     @Override
     public void registrarLeccion(HistoricoLeccion historicoLeccion) {
-        String sql = "INSERT INTO mi_antorcha.historico_lecciones (id, contador_semana, id_estudio_biblico, fecha_estudio, id_actividad) " +
-                "VALUES (:id, :contadorSemana, :idEstudioBiblico, :fechaEstudio, :idActividad)";
+        String sql = "INSERT INTO mi_antorcha.historico_lecciones (id, contador_semana, id_estudio_biblico, fecha_estudio, id_actividad, observacion) " +
+                "VALUES (:id, :contadorSemana, :idEstudioBiblico, :fechaEstudio, :idActividad, :observacion)";
 
         this.jdbcTemplate.crear(historicoLeccion, sql);
     }
