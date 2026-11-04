@@ -13,7 +13,8 @@ public class FabricaHistoricoLeccion {
                 comando.getContadorSemana(),
                 comando.getIdEstudioBiblico(),
                 comando.getFechaEstudio() != null ? comando.getFechaEstudio() : LocalDateTime.now(),
-                comando.getIdActividad()
+                comando.getIdActividad(),
+                comando.getObservacion()
         );
     }
 }

@@ -39,7 +39,9 @@ class ServicioRegistrarLeccionEstudioTest {
                 .build();
         estudio.asignarLeccionCalculada(1);
 
-        HistoricoLeccion leccionHistorica = new HistoricoLeccion(null, 1, 45L, LocalDateTime.now(), 99L);
+        HistoricoLeccion leccionHistorica = new HistoricoLeccion(
+                null, 1, 45L, LocalDateTime.now(), 99L, "Repaso completado"
+        );
         DtoEstudioBiblico dtoExistente = new DtoEstudioBiblico();
 
         // El DAO simula que el estudio existe
@@ -50,6 +52,7 @@ class ServicioRegistrarLeccionEstudioTest {
 
         // Assert
         assertEquals(2, estudio.getLeccion(), "El contador de la lección del estudio bíblico debió incrementarse en 1");
+        assertEquals("Repaso completado", leccionHistorica.getObservacion());
 
         verify(repositorioMock, times(1)).registrarLeccion(leccionHistorica);
         verify(repositorioMock, times(1)).actualizar(estudio);
@@ -59,7 +62,9 @@ class ServicioRegistrarLeccionEstudioTest {
     void fallarAlRegistrarLeccionSiElEstudioBiblicoNoExiste() {
         // Arrange
         EstudioBiblico estudio = new EstudioBiblicoTestDataBuilder().conId(45L).build();
-        HistoricoLeccion leccionHistorica = new HistoricoLeccion(null, 1, 45L, LocalDateTime.now(), 99L);
+        HistoricoLeccion leccionHistorica = new HistoricoLeccion(
+                null, 1, 45L, LocalDateTime.now(), 99L, null
+        );
 
         when(daoMock.consultarPorId(estudio.getId())).thenReturn(null);
 
@@ -80,7 +85,9 @@ class ServicioRegistrarLeccionEstudioTest {
         EstudioBiblico estudio = new EstudioBiblicoTestDataBuilder().conId(45L).build();
         estudio.asignarLeccionCalculada(20);
 
-        HistoricoLeccion leccionHistorica = new HistoricoLeccion(null, 1, 45L, LocalDateTime.now(), 99L);
+        HistoricoLeccion leccionHistorica = new HistoricoLeccion(
+                null, 1, 45L, LocalDateTime.now(), 99L, null
+        );
         DtoEstudioBiblico dtoExistente = new DtoEstudioBiblico();
 
         when(daoMock.consultarPorId(estudio.getId())).thenReturn(dtoExistente);

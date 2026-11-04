@@ -152,6 +152,7 @@ public class ComandoControladorEstudioBiblicoTest {
         comando.setIdEstudioBiblico(idEstudioAfectado);
         comando.setFechaEstudio(LocalDateTime.now());
         comando.setIdActividad(99L);
+        comando.setObservacion("Repaso completado");
 
         // Simulamos que el manejador responde con el ID del estudio afectado
         when(manejadorRegistrarLeccion.ejecutar(any(ComandoHistoricoLeccion.class)))
@@ -165,6 +166,9 @@ public class ComandoControladorEstudioBiblicoTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.valor").value(idEstudioAfectado));
 
-        verify(manejadorRegistrarLeccion, times(1)).ejecutar(any(ComandoHistoricoLeccion.class));
+        verify(manejadorRegistrarLeccion, times(1)).ejecutar(
+                org.mockito.ArgumentMatchers.argThat(comandoRecibido ->
+                        "Repaso completado".equals(comandoRecibido.getObservacion()))
+        );
     }
 }
