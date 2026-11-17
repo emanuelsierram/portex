@@ -16,9 +16,4 @@ dependencies {
     compileOnly project.ext.lombok
     annotationProcessor project.ext.lombok
     implementation project.ext.springbootsecurity
-
-
-
-
-
 }

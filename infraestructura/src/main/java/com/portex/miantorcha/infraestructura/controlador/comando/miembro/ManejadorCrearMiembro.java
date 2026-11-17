@@ -4,7 +4,9 @@ import com.portex.compartido.aplicacion.ComandoRespuesta;
 import com.portex.compartido.aplicacion.manejador.ManejadorComandoRespuesta;
 import com.portex.compartido.dominio.modelo.dto.DtoUsuario;
 import com.portex.compartido.dominio.puerto.repositorio.RepositorioUsuario;
+import com.portex.miantorcha.dominio.modelo.entidad.Antorcha;
 import com.portex.miantorcha.dominio.modelo.entidad.Miembro;
+import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioCrearMiembro;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,16 +20,19 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
     private final FabricaMiembro fabricaMiembro;
 
     private final RepositorioUsuario repositorioUsuario;
+    private final RepositorioAntorcha repositorioAntorcha;
 
 
     public ManejadorCrearMiembro(ServicioCrearMiembro servicioCrearMiembro,
                                  PasswordEncoder passwordEncoder,
                                  FabricaMiembro fabricaMiembro,
-                                 RepositorioUsuario repositorioUsuario) {
+                                 RepositorioUsuario repositorioUsuario,
+                                 RepositorioAntorcha repositorioAntorcha) {
         this.servicioCrearMiembro = servicioCrearMiembro;
         this.passwordEncoder = passwordEncoder;
         this.fabricaMiembro = fabricaMiembro;
         this.repositorioUsuario = repositorioUsuario;
+        this.repositorioAntorcha = repositorioAntorcha;
     }
 
     @Override
@@ -45,6 +50,8 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
 
 
         Miembro miembro = this.fabricaMiembro.crear(comando);
-        return new ComandoRespuesta<>(this.servicioCrearMiembro.ejecutar(miembro));
+        Long idMiembro = this.servicioCrearMiembro.ejecutar(miembro);
+        this.repositorioAntorcha.crear(new Antorcha(null, 1, telefonoLimpio));
+        return new ComandoRespuesta<>(idMiembro);
     }
 }

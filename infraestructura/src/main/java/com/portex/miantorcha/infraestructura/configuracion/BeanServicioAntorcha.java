@@ -11,11 +11,21 @@ import com.portex.miantorcha.dominio.servicio.estudio.ServicioRegistrarLeccionEs
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioActualizarMiembro;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioCrearMiembro;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioEliminarMiembro;
+import com.portex.miantorcha.dominio.servicio.antorcha.ServicioActualizarAntorcha;
+import com.portex.miantorcha.dominio.puerto.notificador.PublicadorAntorcha;
+import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class BeanServicioAntorcha {
+
+    @Bean
+    public ServicioActualizarAntorcha servicioActualizarAntorcha(
+            RepositorioAntorcha repositorioAntorcha,
+            PublicadorAntorcha publicadorAntorcha) {
+        return new ServicioActualizarAntorcha(repositorioAntorcha, publicadorAntorcha);
+    }
 
     @Bean
     public ServicioCrearMiembro servicioCrearMiembro(RepositorioMiembro repositorioMiembro) {

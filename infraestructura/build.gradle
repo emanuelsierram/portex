@@ -14,6 +14,7 @@ dependencies {
     implementation project(':dominio')
     implementation project(':compartido')
     implementation project.ext.springbootweb
+    implementation "org.springframework.boot:spring-boot-starter-websocket:${springBootVersion}"
     implementation project.ext.springbootjdbc
     implementation project.ext.springbootsecurity
     testImplementation project.ext.jupiter
