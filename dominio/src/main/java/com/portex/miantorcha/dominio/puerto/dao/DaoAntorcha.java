@@ -7,4 +7,5 @@ public interface DaoAntorcha {
     DtoAntorcha consultarPorId(Long id);
 
     DtoAntorcha consultarPorUsuarioId(String idUsuario);
+
 }

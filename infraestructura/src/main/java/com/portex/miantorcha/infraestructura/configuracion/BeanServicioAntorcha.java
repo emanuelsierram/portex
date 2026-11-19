@@ -12,6 +12,8 @@ import com.portex.miantorcha.dominio.servicio.miembro.ServicioActualizarMiembro;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioCrearMiembro;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioEliminarMiembro;
 import com.portex.miantorcha.dominio.servicio.antorcha.ServicioActualizarAntorcha;
+import com.portex.miantorcha.dominio.servicio.actividad.ServicioGestionarActividad;
+import com.portex.miantorcha.dominio.puerto.dao.DaoActividad;
 import com.portex.miantorcha.dominio.puerto.notificador.PublicadorAntorcha;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,16 @@ public class BeanServicioAntorcha {
             RepositorioAntorcha repositorioAntorcha,
             PublicadorAntorcha publicadorAntorcha) {
         return new ServicioActualizarAntorcha(repositorioAntorcha, publicadorAntorcha);
+    }
+
+    @Bean
+    public ServicioGestionarActividad servicioGestionarActividad(
+            DaoActividad daoActividad,
+            com.portex.miantorcha.dominio.puerto.dao.DaoAntorcha daoAntorcha,
+            com.portex.miantorcha.dominio.puerto.repositorio.RepositorioActividad repositorioActividad,
+            ServicioActualizarAntorcha servicioActualizarAntorcha) {
+        return new ServicioGestionarActividad(daoActividad, daoAntorcha, repositorioActividad,
+                servicioActualizarAntorcha);
     }
 
     @Bean

@@ -18,10 +18,17 @@ public class ServicioActualizarAntorcha {
     }
 
     public void ejecutar(Antorcha antorcha) {
+        ejecutar(antorcha, 0, 0, null);
+    }
+
+    public void ejecutar(Antorcha antorcha, int totalPoints, int progressPercentage, Integer nextLevelPoints) {
         repositorioAntorcha.actualizar(antorcha);
         publicadorAntorcha.publicar(new DtoAntorcha(
                 antorcha.getId(),
                 antorcha.getNivel(),
-                antorcha.getIdUsuario()));
+                antorcha.getIdUsuario(),
+                totalPoints,
+                progressPercentage,
+                nextLevelPoints));
     }
 }

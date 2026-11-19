@@ -7,7 +7,7 @@ import static com.portex.compartido.dominio.ValidadorArgumento.validarObligatori
 @Getter
 public class Antorcha {
 
-    private static final int NIVEL_MINIMO = 1;
+    private static final int NIVEL_MINIMO = 0;
     private static final int NIVEL_MAXIMO = 10;
 
     private Long id;
@@ -26,7 +26,7 @@ public class Antorcha {
 
     private void validarNivel(Integer nivel) {
         if (nivel < NIVEL_MINIMO || nivel > NIVEL_MAXIMO) {
-            throw new IllegalArgumentException("El nivel de la antorcha debe estar entre 1 y 10");
+            throw new IllegalArgumentException("El nivel de la antorcha debe estar entre 0 y 10");
         }
     }
 }

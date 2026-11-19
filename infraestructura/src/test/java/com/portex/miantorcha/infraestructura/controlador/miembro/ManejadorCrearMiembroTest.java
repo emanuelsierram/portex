@@ -72,7 +72,7 @@ public class ManejadorCrearMiembroTest {
         ArgumentCaptor<com.portex.miantorcha.dominio.modelo.entidad.Antorcha> captorAntorcha =
                 ArgumentCaptor.forClass(com.portex.miantorcha.dominio.modelo.entidad.Antorcha.class);
         Mockito.verify(repositorioAntorcha).crear(captorAntorcha.capture());
-        Assertions.assertEquals(1, captorAntorcha.getValue().getNivel());
+        Assertions.assertEquals(0, captorAntorcha.getValue().getNivel());
         Assertions.assertEquals(telefonoLimpio, captorAntorcha.getValue().getIdUsuario());
         Assertions.assertEquals(10L, respuesta.getValor());
     }

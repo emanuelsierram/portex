@@ -51,7 +51,7 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
 
         Miembro miembro = this.fabricaMiembro.crear(comando);
         Long idMiembro = this.servicioCrearMiembro.ejecutar(miembro);
-        this.repositorioAntorcha.crear(new Antorcha(null, 1, telefonoLimpio));
+        this.repositorioAntorcha.crear(new Antorcha(null, 0, telefonoLimpio));
         return new ComandoRespuesta<>(idMiembro);
     }
 }
