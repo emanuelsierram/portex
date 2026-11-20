@@ -19,7 +19,7 @@ public class RepositorioActividadMysql implements RepositorioActividad {
     public Long crear(Actividad actividad) {
         String sql = "INSERT INTO mi_antorcha.actividades " +
                 "(id_usuario, id_tipo_actividad, descripcion_otro, estado, fecha_realizacion, " +
-                "informar_obra, observaciones, puntos, id_estudio_biblico) " +
+                "informar_obra, observaciones, puntos) " +
                 "VALUES (:idUsuario, :idTipoActividad, :descripcionOtro, :estado, :fechaRealizacion, " +
                 ":informarObra, :observaciones, :puntos)";
         MapSqlParameterSource parametros = new MapSqlParameterSource()
