@@ -41,7 +41,7 @@ public class ConfiguracionSeguridadMA {
                         .requestMatchers(HttpMethod.POST, "/api/estudios-biblicos/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/estudios-biblicos/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/antorcha").authenticated()
-                        .requestMatchers("/api/actividades/**").authenticated()
+                        .requestMatchers("/api/actividades/**").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/estudios-biblicos/lecciones").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/estudios-biblicos/**").authenticated()
                         .anyRequest().authenticated()

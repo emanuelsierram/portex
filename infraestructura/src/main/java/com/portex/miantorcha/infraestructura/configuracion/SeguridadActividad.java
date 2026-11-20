@@ -21,7 +21,7 @@ public class SeguridadActividad {
 
         if (authentication.getAuthorities().stream()
                 .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-            return true;
+            return false;
         }
 
         DtoActividad actividad = daoActividad.consultarPorId(id);
