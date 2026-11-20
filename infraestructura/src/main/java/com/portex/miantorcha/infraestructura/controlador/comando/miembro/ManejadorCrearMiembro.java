@@ -4,8 +4,8 @@ import com.portex.compartido.aplicacion.ComandoRespuesta;
 import com.portex.compartido.aplicacion.manejador.ManejadorComandoRespuesta;
 import com.portex.compartido.dominio.modelo.dto.DtoUsuario;
 import com.portex.compartido.dominio.puerto.repositorio.RepositorioUsuario;
-import com.portex.miantorcha.dominio.modelo.entidad.Antorcha;
 import com.portex.miantorcha.dominio.modelo.entidad.Miembro;
+import com.portex.miantorcha.dominio.modelo.fabrica.FabricaAntorcha;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioCrearMiembro;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,18 +21,21 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
 
     private final RepositorioUsuario repositorioUsuario;
     private final RepositorioAntorcha repositorioAntorcha;
+    private final FabricaAntorcha fabricaAntorcha;
 
 
     public ManejadorCrearMiembro(ServicioCrearMiembro servicioCrearMiembro,
                                  PasswordEncoder passwordEncoder,
                                  FabricaMiembro fabricaMiembro,
                                  RepositorioUsuario repositorioUsuario,
-                                 RepositorioAntorcha repositorioAntorcha) {
+                                 RepositorioAntorcha repositorioAntorcha,
+                                 FabricaAntorcha fabricaAntorcha) {
         this.servicioCrearMiembro = servicioCrearMiembro;
         this.passwordEncoder = passwordEncoder;
         this.fabricaMiembro = fabricaMiembro;
         this.repositorioUsuario = repositorioUsuario;
         this.repositorioAntorcha = repositorioAntorcha;
+        this.fabricaAntorcha = fabricaAntorcha;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
 
         Miembro miembro = this.fabricaMiembro.crear(comando);
         Long idMiembro = this.servicioCrearMiembro.ejecutar(miembro);
-        this.repositorioAntorcha.crear(new Antorcha(null, 0, telefonoLimpio));
+        this.repositorioAntorcha.crear(fabricaAntorcha.crear(null, 0, telefonoLimpio));
         return new ComandoRespuesta<>(idMiembro);
     }
 }

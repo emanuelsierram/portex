@@ -38,11 +38,13 @@ public class RepositorioActividadMysql implements RepositorioActividad {
 
     @Override
     public void actualizar(Actividad actividad) {
-        String sql = "UPDATE mi_antorcha.actividades SET estado = :estado, " +
+        String sql = "UPDATE mi_antorcha.actividades SET id_tipo_actividad = :idTipoActividad, " +
+                "estado = :estado, " +
                 "fecha_realizacion = :fechaRealizacion, informar_obra = :informarObra, " +
                 "observaciones = :observaciones, puntos = :puntos, descripcion_otro = :descripcionOtro " +
                 "WHERE id = :id";
         MapSqlParameterSource parametros = new MapSqlParameterSource()
+                .addValue("idTipoActividad", actividad.getIdTipoActividad())
                 .addValue("estado", actividad.getEstado().getValor())
                 .addValue("fechaRealizacion", actividad.getFechaRealizacion())
                 .addValue("informarObra", actividad.getInformarObra())

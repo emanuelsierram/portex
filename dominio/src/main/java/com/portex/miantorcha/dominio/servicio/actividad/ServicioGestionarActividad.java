@@ -2,68 +2,72 @@ package com.portex.miantorcha.dominio.servicio.actividad;
 
 import com.portex.miantorcha.dominio.modelo.dto.DtoActividad;
 import com.portex.miantorcha.dominio.modelo.dto.DtoAntorcha;
-import com.portex.miantorcha.dominio.modelo.dto.DtoTipoActividad;
+import com.portex.miantorcha.dominio.modelo.dto.DtoProgresoAntorcha;
 import com.portex.miantorcha.dominio.modelo.entidad.Actividad;
-import com.portex.miantorcha.dominio.modelo.entidad.Antorcha;
 import com.portex.miantorcha.dominio.modelo.entidad.EstadoActividad;
+import com.portex.miantorcha.dominio.modelo.fabrica.FabricaAntorcha;
 import com.portex.miantorcha.dominio.puerto.dao.DaoActividad;
 import com.portex.miantorcha.dominio.puerto.dao.DaoAntorcha;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioActividad;
 import com.portex.miantorcha.dominio.servicio.antorcha.ServicioActualizarAntorcha;
 
-import java.time.LocalDate;
 
 public class ServicioGestionarActividad {
+
+    private static final int PORCENTAJE_PROGRESO_MINIMO = 0;
+    private static final int PORCENTAJE_PROGRESO_MAXIMO = 100;
 
     private final DaoActividad daoActividad;
     private final DaoAntorcha daoAntorcha;
     private final RepositorioActividad repositorioActividad;
     private final ServicioActualizarAntorcha servicioActualizarAntorcha;
+    private final FabricaAntorcha fabricaAntorcha;
 
     public ServicioGestionarActividad(DaoActividad daoActividad, DaoAntorcha daoAntorcha,
                                       RepositorioActividad repositorioActividad,
-                                      ServicioActualizarAntorcha servicioActualizarAntorcha) {
+                                      ServicioActualizarAntorcha servicioActualizarAntorcha,
+                                      FabricaAntorcha fabricaAntorcha) {
         this.daoActividad = daoActividad;
         this.daoAntorcha = daoAntorcha;
         this.repositorioActividad = repositorioActividad;
         this.servicioActualizarAntorcha = servicioActualizarAntorcha;
+        this.fabricaAntorcha = fabricaAntorcha;
     }
 
-    public Long crear(String idUsuario, Long idTipoActividad, String descripcionOtro,
-                      LocalDate fechaRealizacion, Boolean informarObra, String observaciones) {
-        DtoTipoActividad tipo = tipoObligatorio(idTipoActividad);
-        Actividad actividad = new Actividad(null, idUsuario, tipo.getId(), tipo.getCodigo(),
-                descripcionOtro, EstadoActividad.POR_HACER, fechaRealizacion, informarObra,
-                observaciones, tipo.getPuntos());
+    public Long crear(Actividad actividad) {
         return repositorioActividad.crear(actividad);
     }
 
-    public void marcarHecha(Long id, String idUsuario) {
-        DtoActividad actual = actividadPropia(id, idUsuario);
+    public void actualizar(Actividad actividad) {
+        DtoActividad actual = actividadPropia(actividad.getId(), actividad.getIdUsuario());
         if (EstadoActividad.HECHO.getValor().equals(actual.getEstado())) {
-            return;
+            throw new IllegalArgumentException("Una actividad HECHA no se puede editar");
         }
-        LocalDate fecha = actual.getFechaRealizacion().isAfter(LocalDate.now())
-                ? LocalDate.now() : actual.getFechaRealizacion();
-        actualizar(actual, EstadoActividad.HECHO.getValor(), fecha);
-        recalcularAntorcha(idUsuario);
+        repositorioActividad.actualizar(actividad);
     }
 
-    public void eliminar(Long id, String idUsuario) {
-        DtoActividad actual = actividadPropia(id, idUsuario);
-        repositorioActividad.eliminar(id);
-        if (EstadoActividad.HECHO.getValor().equals(actual.getEstado())) {
-            recalcularAntorcha(idUsuario);
+    public void cambiarEstado(Actividad actividad) {
+        DtoActividad actual = actividadPropia(actividad.getId(), actividad.getIdUsuario());
+        EstadoActividad nuevoEstado = actividad.getEstado();
+        EstadoActividad estadoActual = EstadoActividad.desdeValor(actual.getEstado());
+        if (estadoActual == EstadoActividad.HECHO) {
+            if (nuevoEstado == EstadoActividad.HECHO) {
+                return;
+            }
+            throw new IllegalArgumentException("Una actividad HECHA no puede cambiar de estado");
+        }
+        repositorioActividad.actualizar(actividad);
+        if (nuevoEstado == EstadoActividad.HECHO) {
+            recalcularAntorcha(actividad.getIdUsuario());
         }
     }
 
-    private void actualizar(DtoActividad actual, String estado, LocalDate fecha) {
-        DtoTipoActividad tipo = tipoObligatorio(actual.getIdTipoActividad());
-        Actividad entidad = new Actividad(actual.getId(), actual.getIdUsuario(),
-                actual.getIdTipoActividad(), tipo.getCodigo(), actual.getDescripcionOtro(),
-                EstadoActividad.desdeValor(estado), fecha, actual.getInformarObra(),
-                actual.getObservaciones(), tipo.getPuntos());
-        repositorioActividad.actualizar(entidad);
+    public void eliminar(Actividad actividad) {
+        DtoActividad actual = actividadPropia(actividad.getId(), actividad.getIdUsuario());
+        repositorioActividad.eliminar(actividad.getId());
+        if (EstadoActividad.HECHO.getValor().equals(actual.getEstado())) {
+            recalcularAntorcha(actividad.getIdUsuario());
+        }
     }
 
     private void recalcularAntorcha(String idUsuario) {
@@ -71,14 +75,17 @@ public class ServicioGestionarActividad {
         if (antorcha == null) {
             throw new IllegalStateException("El usuario no tiene una antorcha");
         }
-        int total = daoActividad.totalPuntosHechos(idUsuario);
-        int nivel = daoActividad.nivelPorPuntos(total);
-        Integer siguiente = daoActividad.siguienteNivelPuntos(nivel);
-        int progreso = siguiente == null ? 100
-                : Math.min(100, Math.max(0, (total - daoActividad.puntosMinimosNivel(nivel)) * 100
-                / (siguiente - daoActividad.puntosMinimosNivel(nivel))));
-        servicioActualizarAntorcha.ejecutar(new Antorcha(antorcha.getId(), nivel, idUsuario),
-                total, progreso, siguiente);
+        DtoProgresoAntorcha progresoAntorcha = daoAntorcha.consultarProgresoAntorcha(idUsuario);
+        int total = progresoAntorcha.getTotalPuntos();
+        int nivel = progresoAntorcha.getNivel();
+        Integer siguiente = progresoAntorcha.getPuntosSiguienteNivel();
+        int progreso = siguiente == null ? PORCENTAJE_PROGRESO_MAXIMO
+                : Math.min(PORCENTAJE_PROGRESO_MAXIMO,
+                Math.max(PORCENTAJE_PROGRESO_MINIMO, (total - progresoAntorcha.getPuntosMinimosNivel())
+                        * PORCENTAJE_PROGRESO_MAXIMO
+                / (siguiente - progresoAntorcha.getPuntosMinimosNivel())));
+        servicioActualizarAntorcha.ejecutar(fabricaAntorcha.crearActualizacion(
+                antorcha, nivel, total, progreso, siguiente));
     }
 
     private DtoActividad actividadPropia(Long id, String idUsuario) {
@@ -86,17 +93,7 @@ public class ServicioGestionarActividad {
         if (actividad == null || !idUsuario.equals(actividad.getIdUsuario())) {
             throw new IllegalArgumentException("La actividad no existe para el usuario autenticado");
         }
-        if (EstadoActividad.HECHO.getValor().equals(actividad.getEstado())) {
-            return actividad;
-        }
         return actividad;
     }
 
-    private DtoTipoActividad tipoObligatorio(Long id) {
-        DtoTipoActividad tipo = daoActividad.consultarTipoPorId(id);
-        if (tipo == null || !Boolean.TRUE.equals(tipo.getActivo())) {
-            throw new IllegalArgumentException("El tipo de actividad no existe o está inactivo");
-        }
-        return tipo;
-    }
 }

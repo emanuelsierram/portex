@@ -22,4 +22,12 @@ public class ManejadorConsultarActividad {
     public List<DtoActividad> listarPorUsuario(String idUsuario) {
         return daoActividad.listarPorUsuario(idUsuario);
     }
+
+    public DtoActividad consultarPorId(Long id, String idUsuario) {
+        DtoActividad actividad = daoActividad.consultarPorId(id);
+        if (actividad == null || !idUsuario.equals(actividad.getIdUsuario())) {
+            return null;
+        }
+        return actividad;
+    }
 }

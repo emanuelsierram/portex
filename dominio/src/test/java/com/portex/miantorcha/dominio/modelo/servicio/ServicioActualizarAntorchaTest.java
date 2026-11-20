@@ -1,6 +1,7 @@
 package com.portex.miantorcha.dominio.modelo.servicio;
 
 import com.portex.miantorcha.dominio.modelo.entidad.Antorcha;
+import com.portex.miantorcha.dominio.modelo.AntorchaActualizada;
 import com.portex.miantorcha.dominio.puerto.notificador.PublicadorAntorcha;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
 import com.portex.miantorcha.dominio.servicio.antorcha.ServicioActualizarAntorcha;
@@ -19,7 +20,7 @@ class ServicioActualizarAntorchaTest {
         ServicioActualizarAntorcha servicio = new ServicioActualizarAntorcha(repositorio, publicador);
         Antorcha antorcha = new Antorcha(1L, 2, "usuario-1");
 
-        servicio.ejecutar(antorcha);
+        servicio.ejecutar(new AntorchaActualizada(antorcha, 0, 0, null));
 
         verify(repositorio).actualizar(antorcha);
         verify(publicador).publicar(any());

@@ -48,42 +48,6 @@ public class DaoActividadMysql implements DaoActividad {
                 new MapSqlParameterSource("idUsuario", idUsuario), new MapeoActividad());
     }
 
-    @Override
-    public int totalPuntosHechos(String idUsuario) {
-        Integer total = jdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(
-                "SELECT COALESCE(SUM(puntos), 0) FROM mi_antorcha.actividades " +
-                        "WHERE id_usuario = :idUsuario AND estado = 'HECHO'",
-                new MapSqlParameterSource("idUsuario", idUsuario), Integer.class);
-        return total == null ? 0 : total;
-    }
-
-    @Override
-    public int nivelPorPuntos(int totalPuntos) {
-        Integer nivel = jdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(
-                "SELECT nivel FROM mi_antorcha.niveles_antorcha " +
-                        "WHERE puntos_minimos <= :totalPuntos " +
-                        "ORDER BY puntos_minimos DESC LIMIT 1",
-                new MapSqlParameterSource("totalPuntos", totalPuntos), Integer.class);
-        return nivel == null ? 0 : nivel;
-    }
-
-    @Override
-    public int puntosMinimosNivel(int nivel) {
-        Integer puntos = jdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(
-                "SELECT puntos_minimos FROM mi_antorcha.niveles_antorcha WHERE nivel = :nivel",
-                new MapSqlParameterSource("nivel", nivel), Integer.class);
-        return puntos == null ? 0 : puntos;
-    }
-
-    @Override
-    public Integer siguienteNivelPuntos(int nivel) {
-        List<Integer> puntos = jdbcTemplate.getNamedParameterJdbcTemplate().queryForList(
-                "SELECT puntos_minimos FROM mi_antorcha.niveles_antorcha " +
-                        "WHERE nivel = :nivel + 1",
-                new MapSqlParameterSource("nivel", nivel), Integer.class);
-        return puntos.isEmpty() ? null : puntos.get(0);
-    }
-
     private String sqlBase() {
         return "SELECT a.id, a.id_usuario, a.id_tipo_actividad, t.codigo, t.nombre, " +
                 "a.descripcion_otro, a.estado, a.fecha_realizacion, a.informar_obra, " +

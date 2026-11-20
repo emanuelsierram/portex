@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/actividades")
@@ -24,5 +25,11 @@ public class ConsultaControladorActividad {
     @GetMapping
     public List<DtoActividad> listar(Principal principal) {
         return manejador.listarPorUsuario(principal.getName());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DtoActividad> consultarPorId(@PathVariable Long id, Principal principal) {
+        DtoActividad actividad = manejador.consultarPorId(id, principal.getName());
+        return actividad == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(actividad);
     }
 }

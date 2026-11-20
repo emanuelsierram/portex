@@ -15,11 +15,4 @@ public interface DaoActividad {
 
     List<DtoActividad> listarPorUsuario(String idUsuario);
 
-    int totalPuntosHechos(String idUsuario);
-
-    int nivelPorPuntos(int totalPuntos);
-
-    int puntosMinimosNivel(int nivel);
-
-    Integer siguienteNivelPuntos(int nivel);
 }

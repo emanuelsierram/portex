@@ -16,6 +16,7 @@ import com.portex.miantorcha.dominio.servicio.actividad.ServicioGestionarActivid
 import com.portex.miantorcha.dominio.puerto.dao.DaoActividad;
 import com.portex.miantorcha.dominio.puerto.notificador.PublicadorAntorcha;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
+import com.portex.miantorcha.dominio.modelo.fabrica.FabricaAntorcha;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,13 +31,19 @@ public class BeanServicioAntorcha {
     }
 
     @Bean
+    public FabricaAntorcha fabricaAntorcha() {
+        return new FabricaAntorcha();
+    }
+
+    @Bean
     public ServicioGestionarActividad servicioGestionarActividad(
             DaoActividad daoActividad,
             com.portex.miantorcha.dominio.puerto.dao.DaoAntorcha daoAntorcha,
             com.portex.miantorcha.dominio.puerto.repositorio.RepositorioActividad repositorioActividad,
-            ServicioActualizarAntorcha servicioActualizarAntorcha) {
+            ServicioActualizarAntorcha servicioActualizarAntorcha,
+            FabricaAntorcha fabricaAntorcha) {
         return new ServicioGestionarActividad(daoActividad, daoAntorcha, repositorioActividad,
-                servicioActualizarAntorcha);
+                servicioActualizarAntorcha, fabricaAntorcha);
     }
 
     @Bean

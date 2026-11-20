@@ -2,8 +2,8 @@ package com.portex.miantorcha.infraestructura.adaptador.dao.antorcha;
 
 import com.portex.compartido.infraestructura.jbdc.CustomNamedParameterJdbcTemplate;
 import com.portex.miantorcha.dominio.modelo.dto.DtoAntorcha;
+import com.portex.miantorcha.dominio.modelo.dto.DtoProgresoAntorcha;
 import com.portex.miantorcha.dominio.puerto.dao.DaoAntorcha;
-import com.portex.miantorcha.dominio.puerto.dao.DaoActividad;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
@@ -18,11 +18,9 @@ public class DaoAntorchaMysql implements DaoAntorcha {
             "SELECT id, nivel, id_usuario FROM mi_antorcha.antorcha WHERE id_usuario = :idUsuario";
 
     private final CustomNamedParameterJdbcTemplate jdbcTemplate;
-    private final DaoActividad daoActividad;
 
-    public DaoAntorchaMysql(CustomNamedParameterJdbcTemplate jdbcTemplate, DaoActividad daoActividad) {
+    public DaoAntorchaMysql(CustomNamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.daoActividad = daoActividad;
     }
 
     @Override
@@ -42,12 +40,36 @@ public class DaoAntorchaMysql implements DaoAntorcha {
             return null;
         }
         DtoAntorcha antorcha = resultados.get(0);
-        int total = daoActividad.totalPuntosHechos(idUsuario);
-        int nivel = daoActividad.nivelPorPuntos(total);
-        Integer siguiente = daoActividad.siguienteNivelPuntos(nivel);
+        DtoProgresoAntorcha progresoAntorcha = consultarProgresoAntorcha(idUsuario);
+        int total = progresoAntorcha.getTotalPuntos();
+        int nivel = progresoAntorcha.getNivel();
+        Integer siguiente = progresoAntorcha.getPuntosSiguienteNivel();
         int progreso = siguiente == null ? 100 : Math.min(100, Math.max(0,
-                (total - daoActividad.puntosMinimosNivel(nivel)) * 100
-                        / (siguiente - daoActividad.puntosMinimosNivel(nivel))));
+                (total - progresoAntorcha.getPuntosMinimosNivel()) * 100
+                        / (siguiente - progresoAntorcha.getPuntosMinimosNivel())));
         return new DtoAntorcha(antorcha.getId(), nivel, idUsuario, total, progreso, siguiente);
+    }
+
+    @Override
+    public DtoProgresoAntorcha consultarProgresoAntorcha(String idUsuario) {
+        String sql = "SELECT puntos.total_puntos, " +
+                "COALESCE((SELECT nivel FROM mi_antorcha.niveles_antorcha " +
+                "WHERE puntos_minimos <= puntos.total_puntos ORDER BY puntos_minimos DESC LIMIT 1), 0) AS nivel, " +
+                "COALESCE((SELECT puntos_minimos FROM mi_antorcha.niveles_antorcha " +
+                "WHERE puntos_minimos <= puntos.total_puntos ORDER BY puntos_minimos DESC LIMIT 1), 0) " +
+                "AS puntos_minimos_nivel, " +
+                "(SELECT puntos_minimos FROM mi_antorcha.niveles_antorcha " +
+                "WHERE puntos_minimos > puntos.total_puntos ORDER BY puntos_minimos ASC LIMIT 1) " +
+                "AS puntos_siguiente_nivel " +
+                "FROM (SELECT COALESCE(SUM(puntos), 0) AS total_puntos " +
+                "FROM mi_antorcha.actividades " +
+                "WHERE id_usuario = :idUsuario AND estado = 'HECHO') puntos";
+        MapSqlParameterSource parametros = new MapSqlParameterSource("idUsuario", idUsuario);
+        return jdbcTemplate.getNamedParameterJdbcTemplate().queryForObject(sql, parametros,
+                (rs, rowNum) -> new DtoProgresoAntorcha(
+                        rs.getInt("total_puntos"),
+                        rs.getInt("nivel"),
+                        rs.getInt("puntos_minimos_nivel"),
+                        rs.getObject("puntos_siguiente_nivel", Integer.class)));
     }
 }

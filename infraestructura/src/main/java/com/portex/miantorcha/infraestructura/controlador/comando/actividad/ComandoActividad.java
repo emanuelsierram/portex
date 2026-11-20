@@ -13,4 +13,5 @@ public class ComandoActividad {
     private LocalDate fechaRealizacion;
     private Boolean informarObra;
     private String observaciones;
+    private String estado;
 }
