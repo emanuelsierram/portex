@@ -1,6 +1,7 @@
 package com.portex.miantorcha.infraestructura.adaptador.cliente.usuario;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -9,10 +10,18 @@ public class ClienteUsuario {
 
     private final RestTemplate restTemplate;
 
+    @Autowired
     public ClienteUsuario(@Value("${porta-usuarios.base-url}") String baseUrl) {
         this.restTemplate = new RestTemplate();
         this.restTemplate.setUriTemplateHandler(
                 new org.springframework.web.util.DefaultUriBuilderFactory(baseUrl));
+    }
+
+    public ClienteUsuario() {
+        this.restTemplate = new RestTemplate();
+        this.restTemplate.setUriTemplateHandler(
+                new org.springframework.web.util.DefaultUriBuilderFactory(
+                        System.getenv().getOrDefault("PORTA_USUARIOS_BASE_URL", "")));
     }
 
     ClienteUsuario(RestTemplate restTemplate) {
