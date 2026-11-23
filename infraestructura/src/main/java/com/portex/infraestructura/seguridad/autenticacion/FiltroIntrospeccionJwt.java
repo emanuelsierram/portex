@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Component
+@Profile("!test")
 public class FiltroIntrospeccionJwt extends org.springframework.web.filter.OncePerRequestFilter {
 
     private final RestTemplate restTemplate;
