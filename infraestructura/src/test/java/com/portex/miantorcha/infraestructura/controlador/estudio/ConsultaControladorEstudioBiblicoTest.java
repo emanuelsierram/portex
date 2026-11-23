@@ -1,7 +1,6 @@
 package com.portex.miantorcha.infraestructura.controlador.estudio;
 
 import com.portex.ApplicationMock;
-import com.portex.compartido.infraestructura.seguridad.jwt.JwtTokenManager;
 import com.portex.miantorcha.dominio.modelo.dto.DtoEstudioBiblico;
 import com.portex.miantorcha.dominio.modelo.dto.DtoHistoricoLeccion;
 import com.portex.miantorcha.infraestructura.configuracion.SeguridadEstudio;
@@ -55,8 +54,7 @@ public class ConsultaControladorEstudioBiblicoTest {
 
     @BeforeEach
     public void setUp() {
-        JwtTokenManager jwtTokenManager = new JwtTokenManager();
-        this.tokenPrueba = jwtTokenManager.crear("admin");
+        this.tokenPrueba = "token-prueba";
     }
 
     @Test

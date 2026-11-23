@@ -2,7 +2,6 @@ package com.portex.miantorcha.dominio.modelo.servicio;
 
 import com.portex.compartido.dominio.excepcion.ExcepcionDuplicidad;
 import com.portex.compartido.dominio.excepcion.ExcepcionValorObligatorio;
-import com.portex.compartido.dominio.puerto.repositorio.RepositorioUsuario;
 import com.portex.miexperiencia.BasePrueba;
 import com.portex.miantorcha.dominio.modelo.entidad.Miembro;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioMiembro;

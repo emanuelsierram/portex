@@ -1,7 +1,6 @@
 package com.portex.miexperiencia.controlador.trabajador;
 
 import com.portex.ApplicationMock;
-import com.portex.compartido.infraestructura.seguridad.jwt.JwtTokenManager;
 import com.portex.miexperiencia.infraestructura.controlador.consulta.trabajador.ConsultaControladorTrabajador;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,8 +36,7 @@ public class ConsultaControladorTrabajadorTest {
 
     @BeforeEach
     public void setUp() {
-        JwtTokenManager jwtTokenManager = new JwtTokenManager();
-        this.tokenPrueba = jwtTokenManager.crear("admin");
+        this.tokenPrueba = "token-prueba";
     }
     @Test
     public void listarTrabajadoresTest() throws Exception {

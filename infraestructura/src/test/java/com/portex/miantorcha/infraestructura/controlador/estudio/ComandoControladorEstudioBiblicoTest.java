@@ -5,7 +5,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.portex.ApplicationMock;
 import com.portex.compartido.aplicacion.ComandoRespuesta;
 import com.portex.compartido.dominio.excepcion.ExcepcionValorObligatorio;
-import com.portex.compartido.infraestructura.seguridad.jwt.JwtTokenManager;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ComandoControladorEstudioBiblico;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ComandoEstudioBiblico;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ComandoHistoricoLeccion;
@@ -69,8 +68,7 @@ public class ComandoControladorEstudioBiblicoTest {
 
     @BeforeEach
     public void setUp() {
-        JwtTokenManager jwtTokenManager = new JwtTokenManager();
-        this.tokenPrueba = jwtTokenManager.crear("admin");
+        this.tokenPrueba = "token-prueba";
     }
 
     @Test
