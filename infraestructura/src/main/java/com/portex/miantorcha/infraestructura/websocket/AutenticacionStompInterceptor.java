@@ -1,7 +1,7 @@
 package com.portex.miantorcha.infraestructura.websocket;
 
-import com.portex.compartido.infraestructura.seguridad.jwt.JwtTokenManager;
-import com.portex.compartido.infraestructura.seguridad.servicio.ServicioSeguridadUsuario;
+import com.portex.compartido.infraestructura.seguridad.FiltroIntrospeccionJwt;
+import com.portex.compartido.infraestructura.seguridad.ResultadoIntrospeccion;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -9,21 +9,21 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
+
+import java.util.List;
+import java.util.Locale;
 
 @Component
 public class AutenticacionStompInterceptor implements ChannelInterceptor {
 
     private static final String AUTHORIZATION = "Authorization";
-    private final JwtTokenManager jwtTokenManager;
-    private final ServicioSeguridadUsuario servicioSeguridadUsuario;
+    private final FiltroIntrospeccionJwt filtroIntrospeccionJwt;
 
-    public AutenticacionStompInterceptor(
-            JwtTokenManager jwtTokenManager,
-            ServicioSeguridadUsuario servicioSeguridadUsuario) {
-        this.jwtTokenManager = jwtTokenManager;
-        this.servicioSeguridadUsuario = servicioSeguridadUsuario;
+    public AutenticacionStompInterceptor(FiltroIntrospeccionJwt filtroIntrospeccionJwt) {
+        this.filtroIntrospeccionJwt = filtroIntrospeccionJwt;
     }
 
     @Override
@@ -32,28 +32,42 @@ public class AutenticacionStompInterceptor implements ChannelInterceptor {
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String authorization = accessor.getFirstNativeHeader(AUTHORIZATION);
-            String token = extraerToken(authorization);
-            if (token == null || !jwtTokenManager.esValido(token)) {
+            if (authorization == null || !authorization.startsWith("Bearer ")
+                    || authorization.substring("Bearer ".length()).trim().isEmpty()) {
                 throw new IllegalArgumentException("La conexión WebSocket requiere un token JWT válido");
             }
 
-            String usuario = jwtTokenManager.obtenerUsuario(token);
-            UserDetails userDetails = servicioSeguridadUsuario.loadUserByUsername(usuario);
+            ResultadoIntrospeccion resultado;
+            try {
+                resultado = filtroIntrospeccionJwt.introspectar(authorization);
+            } catch (RestClientException exception) {
+                throw new IllegalArgumentException(
+                        "No fue posible validar el token con el servicio de usuarios",
+                        exception
+                );
+            }
+
+            if (resultado == null || !resultado.active() || resultado.usuario() == null) {
+                throw new IllegalArgumentException("La conexión WebSocket requiere un token JWT válido");
+            }
+
+            List<SimpleGrantedAuthority> authorities = (resultado.roles() == null
+                    ? List.<String>of()
+                    : resultado.roles()).stream()
+                    .filter(rol -> rol != null && !rol.isBlank())
+                    .map(rol -> rol.toUpperCase(Locale.ROOT).replace("ROLE_", ""))
+                    .map(rol -> new SimpleGrantedAuthority("ROLE_" + rol))
+                    .distinct()
+                    .toList();
             accessor.setUser(new UsernamePasswordAuthenticationToken(
-                    userDetails.getUsername(),
-                    userDetails.getPassword(),
-                    userDetails.getAuthorities()));
+                    resultado.usuario(),
+                    null,
+                    authorities
+            ));
             return MessageBuilder.createMessage(message.getPayload(), accessor.getMessageHeaders());
         }
 
         return message;
     }
 
-    private String extraerToken(String authorization) {
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-            return null;
-        }
-        String token = authorization.substring("Bearer ".length()).trim();
-        return token.isEmpty() ? null : token;
-    }
 }

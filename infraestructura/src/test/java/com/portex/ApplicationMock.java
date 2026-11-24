@@ -58,7 +58,7 @@ public class ApplicationMock {
 
                 String authorization = ((jakarta.servlet.http.HttpServletRequest) request)
                         .getHeader("Authorization");
-                if (authorization != null && authorization.startsWith("Bearer ")) {
+                if ("Bearer token-prueba".equals(authorization)) {
                     SecurityContextHolder.getContext().setAuthentication(
                             new UsernamePasswordAuthenticationToken(
                                     "admin",
@@ -67,6 +67,16 @@ public class ApplicationMock {
                                             new SimpleGrantedAuthority("ROLE_USER"))
                             )
                     );
+                } else if ("Bearer token-usuario-prueba".equals(authorization)) {
+                    SecurityContextHolder.getContext().setAuthentication(
+                            new UsernamePasswordAuthenticationToken(
+                                    "usuario-1",
+                                    null,
+                                    List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                            )
+                    );
+                } else {
+                    SecurityContextHolder.clearContext();
                 }
 
                 chain.doFilter(request, response);

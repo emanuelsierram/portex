@@ -77,6 +77,7 @@ public class ComandoControladorEstudioBiblicoTest {
     @BeforeEach
     public void setUp() {
         this.tokenPrueba = "token-prueba";
+        this.tokenUsuarioPrueba = "token-usuario-prueba";
     }
 
     @Test

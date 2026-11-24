@@ -59,45 +59,54 @@ public class FiltroIntrospeccionJwt extends org.springframework.web.filter.OnceP
             return;
         }
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.AUTHORIZATION, authorization);
-        headers.set("X-Internal-Api-Key", apiKeyInterna);
-
         try {
-            ResponseEntity<ResultadoIntrospeccion> respuesta =
-                    restTemplate.exchange(
-                            "/internal/v1/auth/introspect",
-                            HttpMethod.POST,
-                            new HttpEntity<>(headers),
-                            ResultadoIntrospeccion.class
-                    );
-
-            ResultadoIntrospeccion resultado = respuesta.getBody();
-            if (respuesta.getStatusCode().is2xxSuccessful()
-                    && resultado != null
-                    && resultado.active()
-                    && resultado.usuario() != null) {
-                List<SimpleGrantedAuthority> authorities = (resultado.roles() == null
-                        ? List.<String>of()
-                        : resultado.roles()).stream()
-                        .filter(rol -> rol != null && !rol.isBlank())
-                        .map(rol -> rol.toUpperCase(Locale.ROOT).replace("ROLE_", ""))
-                        .map(rol -> new SimpleGrantedAuthority("ROLE_" + rol))
-                        .distinct()
-                        .toList();
-
+            ResultadoIntrospeccion resultado = introspectar(authorization);
+            if (resultado.active() && resultado.usuario() != null) {
                 SecurityContextHolder.getContext().setAuthentication(
                         new UsernamePasswordAuthenticationToken(
                                 resultado.usuario(),
                                 null,
-                                authorities
+                                convertirRoles(resultado.roles())
                         )
                 );
             }
-        } catch (RestClientException ignored) {
+        } catch (RestClientException exception) {
             SecurityContextHolder.clearContext();
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    public ResultadoIntrospeccion introspectar(String authorization) {
+        if (authorization == null || !authorization.startsWith("Bearer ")
+                || authorization.substring("Bearer ".length()).trim().isEmpty()) {
+            return new ResultadoIntrospeccion(false, null, List.of());
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, authorization);
+        headers.set("X-Internal-Api-Key", apiKeyInterna);
+
+        ResponseEntity<ResultadoIntrospeccion> respuesta =
+                restTemplate.exchange(
+                        "/internal/v1/auth/introspect",
+                        HttpMethod.POST,
+                        new HttpEntity<>(headers),
+                        ResultadoIntrospeccion.class
+                );
+
+        if (!respuesta.getStatusCode().is2xxSuccessful() || respuesta.getBody() == null) {
+            return new ResultadoIntrospeccion(false, null, List.of());
+        }
+        return respuesta.getBody();
+    }
+
+    private List<SimpleGrantedAuthority> convertirRoles(List<String> roles) {
+        return (roles == null ? List.<String>of() : roles).stream()
+                .filter(rol -> rol != null && !rol.isBlank())
+                .map(rol -> rol.toUpperCase(Locale.ROOT).replace("ROLE_", ""))
+                .map(rol -> new SimpleGrantedAuthority("ROLE_" + rol))
+                .distinct()
+                .toList();
     }
 }
