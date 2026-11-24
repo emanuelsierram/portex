@@ -1,6 +1,7 @@
 package com.portex.miantorcha.infraestructura.controlador.comando.estudio;
 
 import com.portex.compartido.aplicacion.ComandoRespuesta;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,16 +27,19 @@ public class ComandoControladorEstudioBiblico {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("@seguridadEstudio.puedeConsultarLeccionesPorEstudio(#id, authentication)")
     public void actualizar(@RequestBody ComandoEstudioBiblico comando, @PathVariable Long id) {
         this.manejadorActualizarEstudioBiblico.ejecutar(comando, id);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@seguridadEstudio.puedeConsultarLeccionesPorEstudio(#id, authentication)")
     public void eliminar(@PathVariable Long id) {
         this.manejadorEliminarEstudioBiblico.ejecutar(id);
     }
 
     @PostMapping("/lecciones")
+    @PreAuthorize("@seguridadEstudio.puedeConsultarLeccionesPorEstudio(#comando.idEstudioBiblico, authentication)")
     public ComandoRespuesta<Long> registrarLeccion(@RequestBody ComandoHistoricoLeccion comando) {
         return this.manejadorRegistrarLeccion.ejecutar(comando);
     }

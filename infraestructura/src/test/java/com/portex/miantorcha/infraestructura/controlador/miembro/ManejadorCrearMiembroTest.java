@@ -4,6 +4,8 @@ import com.portex.compartido.aplicacion.ComandoRespuesta;
 import com.portex.miantorcha.infraestructura.adaptador.cliente.usuario.ClienteUsuario;
 import com.portex.miantorcha.infraestructura.adaptador.cliente.usuario.ComandoCrearUsuario;
 import com.portex.miantorcha.dominio.modelo.entidad.Miembro;
+import com.portex.miantorcha.dominio.modelo.fabrica.FabricaAntorcha;
+import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioCrearMiembro;
 import com.portex.miantorcha.infraestructura.controlador.comando.miembro.ComandoMiembro;
 import com.portex.miantorcha.infraestructura.controlador.comando.miembro.FabricaMiembro;
@@ -19,6 +21,7 @@ public class ManejadorCrearMiembroTest {
 
     private ServicioCrearMiembro servicioCrearMiembro;
     private ClienteUsuario clienteUsuario;
+    private RepositorioAntorcha repositorioAntorcha;
     private ManejadorCrearMiembro manejadorCrearMiembro;
 
     private static final String TELEFONO = "3109876543";
@@ -28,13 +31,16 @@ public class ManejadorCrearMiembroTest {
     public void setup() {
         servicioCrearMiembro = Mockito.mock(ServicioCrearMiembro.class);
         clienteUsuario = Mockito.mock(ClienteUsuario.class);
+        repositorioAntorcha = Mockito.mock(RepositorioAntorcha.class);
 
         FabricaMiembro fabricaMiembro = new FabricaMiembro();
 
         manejadorCrearMiembro = new ManejadorCrearMiembro(
                 servicioCrearMiembro,
                 fabricaMiembro,
-                clienteUsuario
+                clienteUsuario,
+                repositorioAntorcha,
+                new FabricaAntorcha()
                 );
     }
 
@@ -58,6 +64,11 @@ public class ManejadorCrearMiembroTest {
 
         Mockito.verify(servicioCrearMiembro).ejecutar(Mockito.any(Miembro.class));
         Mockito.verify(clienteUsuario, Mockito.never()).eliminar(Mockito.anyString());
+        ArgumentCaptor<com.portex.miantorcha.dominio.modelo.entidad.Antorcha> captorAntorcha =
+        ArgumentCaptor.forClass(com.portex.miantorcha.dominio.modelo.entidad.Antorcha.class);
+        Mockito.verify(repositorioAntorcha).crear(captorAntorcha.capture());
+        Assertions.assertEquals(0, captorAntorcha.getValue().getNivel());
+        Assertions.assertEquals(telefonoLimpio, captorAntorcha.getValue().getIdUsuario());
         Assertions.assertEquals(10L, respuesta.getValor());
     }
 

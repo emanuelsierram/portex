@@ -28,7 +28,8 @@ public class ConfiguracionSeguridadMA {
     public SecurityFilterChain filterChainAntorcha(HttpSecurity http) throws Exception {
         http
                 // Indicamos que esta cadena SOLO aplica para las rutas de Mi Antorcha
-                .securityMatcher("/miembros/**", "/api/estudios-biblicos/**")
+                .securityMatcher("/miembros/**", "/api/estudios-biblicos/**", "/api/antorcha/**",
+                        "/api/actividades/**", "/ws/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -39,6 +40,8 @@ public class ConfiguracionSeguridadMA {
                         .requestMatchers(HttpMethod.GET, "/miembros/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/estudios-biblicos/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/estudios-biblicos/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/antorcha").authenticated()
+                        .requestMatchers("/api/actividades/**").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/estudios-biblicos/lecciones").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/estudios-biblicos/**").authenticated()
                         .anyRequest().authenticated()

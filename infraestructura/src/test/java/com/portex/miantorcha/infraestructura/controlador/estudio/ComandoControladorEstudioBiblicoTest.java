@@ -12,6 +12,8 @@ import com.portex.miantorcha.infraestructura.controlador.comando.estudio.Manejad
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ManejadorEliminarEstudioBiblico;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ManejadorRegistrarLeccion;
 import com.portex.miantorcha.dominio.modelo.dto.DtoMiembro;
+import com.portex.miantorcha.dominio.modelo.dto.DtoEstudioBiblico;
+import com.portex.miantorcha.dominio.puerto.dao.DaoEstudioBiblico;
 import com.portex.miantorcha.dominio.puerto.dao.DaoMiembro;
 import com.portex.miantorcha.testdatabuilder.ComandoEstudioBiblicoTestDataBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -26,6 +28,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDateTime;
 
@@ -53,6 +56,7 @@ public class ComandoControladorEstudioBiblicoTest {
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     private String tokenPrueba;
+    private String tokenUsuarioPrueba;
 
     @MockBean
     private ManejadorActualizarEstudioBiblico manejadorActualizarEstudioBiblico;
@@ -65,6 +69,10 @@ public class ComandoControladorEstudioBiblicoTest {
 
     @MockBean
     private DaoMiembro daoMiembro;
+
+    @MockBean
+    private DaoEstudioBiblico daoEstudioBiblico;
+
 
     @BeforeEach
     public void setUp() {
@@ -111,6 +119,12 @@ public class ComandoControladorEstudioBiblicoTest {
     void actualizarEstudioBiblicoExitoso() throws Exception {
         // Arrange
         Long idEstudio = 1L;
+        DtoEstudioBiblico estudio = org.mockito.Mockito.mock(DtoEstudioBiblico.class);
+        DtoMiembro miembro = org.mockito.Mockito.mock(DtoMiembro.class);
+        when(estudio.getIdUsuarioAsignado()).thenReturn(20L);
+        when(miembro.getId()).thenReturn(20L);
+        when(daoEstudioBiblico.consultarPorId(idEstudio)).thenReturn(estudio);
+        when(daoMiembro.consultarPorUsuarioId("admin")).thenReturn(miembro);
         ComandoEstudioBiblico comando = new ComandoEstudioBiblico();
         comando.setNombrePersona("Juan Pérez Modificado");
         comando.setDireccionPersona("Avenida Siempreviva 742");
@@ -131,6 +145,12 @@ public class ComandoControladorEstudioBiblicoTest {
     void eliminarEstudioBiblicoExitoso() throws Exception {
         // Arrange
         Long idEstudio = 1L;
+        DtoEstudioBiblico estudio = org.mockito.Mockito.mock(DtoEstudioBiblico.class);
+        DtoMiembro miembro = org.mockito.Mockito.mock(DtoMiembro.class);
+        when(estudio.getIdUsuarioAsignado()).thenReturn(20L);
+        when(miembro.getId()).thenReturn(20L);
+        when(daoEstudioBiblico.consultarPorId(idEstudio)).thenReturn(estudio);
+        when(daoMiembro.consultarPorUsuarioId("admin")).thenReturn(miembro);
 
         // Act & Assert
         mockMvc.perform(delete("/api/estudios-biblicos/" + idEstudio)
@@ -142,9 +162,52 @@ public class ComandoControladorEstudioBiblicoTest {
     }
 
     @Test
+    void rechazarActualizarEstudioBiblicoDeOtroUsuario() throws Exception {
+        Long idEstudio = 1L;
+        DtoEstudioBiblico estudio = org.mockito.Mockito.mock(DtoEstudioBiblico.class);
+        DtoMiembro miembro = org.mockito.Mockito.mock(DtoMiembro.class);
+        when(estudio.getIdUsuarioAsignado()).thenReturn(20L);
+        when(miembro.getId()).thenReturn(21L);
+        when(daoEstudioBiblico.consultarPorId(idEstudio)).thenReturn(estudio);
+        when(daoMiembro.consultarPorUsuarioId("usuario-1")).thenReturn(miembro);
+
+        mockMvc.perform(put("/api/estudios-biblicos/" + idEstudio)
+                        .header("Authorization", "Bearer " + this.tokenUsuarioPrueba)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new ComandoEstudioBiblico())))
+                .andExpect(status().isForbidden());
+
+        verify(manejadorActualizarEstudioBiblico, times(0)).ejecutar(any(ComandoEstudioBiblico.class), eq(idEstudio));
+    }
+
+    @Test
+    void rechazarEliminarEstudioBiblicoDeOtroUsuario() throws Exception {
+        Long idEstudio = 1L;
+        DtoEstudioBiblico estudio = org.mockito.Mockito.mock(DtoEstudioBiblico.class);
+        DtoMiembro miembro = org.mockito.Mockito.mock(DtoMiembro.class);
+        when(estudio.getIdUsuarioAsignado()).thenReturn(20L);
+        when(miembro.getId()).thenReturn(21L);
+        when(daoEstudioBiblico.consultarPorId(idEstudio)).thenReturn(estudio);
+        when(daoMiembro.consultarPorUsuarioId("usuario-1")).thenReturn(miembro);
+
+        mockMvc.perform(delete("/api/estudios-biblicos/" + idEstudio)
+                        .header("Authorization", "Bearer " + this.tokenUsuarioPrueba)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+
+        verify(manejadorEliminarEstudioBiblico, times(0)).ejecutar(eq(idEstudio));
+    }
+
+    @Test
     void registrarLeccionExitoso() throws Exception {
         // Arrange
         Long idEstudioAfectado = 15L;
+        DtoEstudioBiblico estudio = org.mockito.Mockito.mock(DtoEstudioBiblico.class);
+        DtoMiembro miembro = org.mockito.Mockito.mock(DtoMiembro.class);
+        when(estudio.getIdUsuarioAsignado()).thenReturn(20L);
+        when(miembro.getId()).thenReturn(20L);
+        when(daoEstudioBiblico.consultarPorId(idEstudioAfectado)).thenReturn(estudio);
+        when(daoMiembro.consultarPorUsuarioId("usuario-1")).thenReturn(miembro);
         ComandoHistoricoLeccion comando = new ComandoHistoricoLeccion();
         comando.setContadorSemana(1);
         comando.setIdEstudioBiblico(idEstudioAfectado);
@@ -158,7 +221,7 @@ public class ComandoControladorEstudioBiblicoTest {
 
         // Act & Assert
         mockMvc.perform(post("/api/estudios-biblicos/lecciones")
-                        .header("Authorization", "Bearer " + this.tokenPrueba)
+                        .header("Authorization", "Bearer " + this.tokenUsuarioPrueba)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(comando)))
                 .andExpect(status().isOk())
@@ -168,5 +231,27 @@ public class ComandoControladorEstudioBiblicoTest {
                 org.mockito.ArgumentMatchers.argThat(comandoRecibido ->
                         "Repaso completado".equals(comandoRecibido.getObservacion()))
         );
+    }
+
+    @Test
+    void rechazarRegistrarLeccionDeEstudioDeOtroUsuario() throws Exception {
+        Long idEstudioAfectado = 15L;
+        DtoEstudioBiblico estudio = org.mockito.Mockito.mock(DtoEstudioBiblico.class);
+        DtoMiembro miembro = org.mockito.Mockito.mock(DtoMiembro.class);
+        when(estudio.getIdUsuarioAsignado()).thenReturn(20L);
+        when(miembro.getId()).thenReturn(21L);
+        when(daoEstudioBiblico.consultarPorId(idEstudioAfectado)).thenReturn(estudio);
+        when(daoMiembro.consultarPorUsuarioId("usuario-1")).thenReturn(miembro);
+
+        ComandoHistoricoLeccion comando = new ComandoHistoricoLeccion();
+        comando.setIdEstudioBiblico(idEstudioAfectado);
+
+        mockMvc.perform(post("/api/estudios-biblicos/lecciones")
+                .header("Authorization", "Bearer " + this.tokenUsuarioPrueba)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(comando)))
+        .andExpect(status().isForbidden());
+
+        verify(manejadorRegistrarLeccion, times(0)).ejecutar(any(ComandoHistoricoLeccion.class));
     }
 }
