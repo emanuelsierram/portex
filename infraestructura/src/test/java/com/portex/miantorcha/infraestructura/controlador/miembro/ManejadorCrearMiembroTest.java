@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 public class ManejadorCrearMiembroTest {
 
@@ -56,6 +57,47 @@ public class ManejadorCrearMiembroTest {
         Mockito.verify(clienteUsuario).asignarRol(telefonoLimpio, "USER");
 
         Mockito.verify(servicioCrearMiembro).ejecutar(Mockito.any(Miembro.class));
+        Mockito.verify(clienteUsuario, Mockito.never()).eliminar(Mockito.anyString());
         Assertions.assertEquals(10L, respuesta.getValor());
+    }
+
+    @Test
+    public void eliminarUsuarioSiFallaLaCreacionDelMiembro() {
+        ComandoMiembro comando = new ComandoMiembroTestDataBuilder().build();
+        RuntimeException errorCreacion = new RuntimeException("El correo ya existe");
+        Mockito.when(servicioCrearMiembro.ejecutar(Mockito.any(Miembro.class)))
+                .thenThrow(errorCreacion);
+
+        RuntimeException errorLanzado = Assertions.assertThrows(
+                RuntimeException.class,
+                () -> manejadorCrearMiembro.ejecutar(comando)
+        );
+
+        Assertions.assertSame(errorCreacion, errorLanzado);
+        InOrder orden = Mockito.inOrder(clienteUsuario);
+        orden.verify(clienteUsuario).eliminarRol(TELEFONO, "USER");
+        orden.verify(clienteUsuario).eliminar(TELEFONO);
+    }
+
+    @Test
+    public void conservaErrorDeCreacionSiFallaLaEliminacionDelRol() {
+        ComandoMiembro comando = new ComandoMiembroTestDataBuilder().build();
+        RuntimeException errorCreacion = new RuntimeException("El correo ya existe");
+        RuntimeException errorEliminacion = new RuntimeException("No se pudo eliminar el rol");
+        Mockito.when(servicioCrearMiembro.ejecutar(Mockito.any(Miembro.class)))
+                .thenThrow(errorCreacion);
+        Mockito.doThrow(errorEliminacion).when(clienteUsuario).eliminarRol(TELEFONO, "USER");
+
+        RuntimeException errorLanzado = Assertions.assertThrows(
+                RuntimeException.class,
+                () -> manejadorCrearMiembro.ejecutar(comando)
+        );
+
+        Assertions.assertSame(errorCreacion, errorLanzado);
+        Assertions.assertArrayEquals(
+                new Throwable[]{errorEliminacion},
+                errorLanzado.getSuppressed()
+        );
+        Mockito.verify(clienteUsuario, Mockito.never()).eliminar(Mockito.anyString());
     }
 }

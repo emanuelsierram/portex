@@ -39,9 +39,20 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
         );
 
         this.clienteUsuario.crear(usuarioSeguridad);
-        this.clienteUsuario.asignarRol(telefonoLimpio, "USER");
 
-        Miembro miembro = this.fabricaMiembro.crear(comando);
-        return new ComandoRespuesta<>(this.servicioCrearMiembro.ejecutar(miembro));
+        try {
+            this.clienteUsuario.asignarRol(telefonoLimpio, "USER");
+
+            Miembro miembro = this.fabricaMiembro.crear(comando);
+            return new ComandoRespuesta<>(this.servicioCrearMiembro.ejecutar(miembro));
+        } catch (RuntimeException errorCreacionMiembro) {
+            try {
+                this.clienteUsuario.eliminarRol(telefonoLimpio, "USER");
+                this.clienteUsuario.eliminar(telefonoLimpio);
+            } catch (RuntimeException errorEliminacionUsuario) {
+                errorCreacionMiembro.addSuppressed(errorEliminacionUsuario);
+            }
+            throw errorCreacionMiembro;
+        }
     }
 }

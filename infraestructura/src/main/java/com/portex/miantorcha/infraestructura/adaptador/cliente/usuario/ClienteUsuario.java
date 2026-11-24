@@ -41,4 +41,12 @@ public class ClienteUsuario {
                 rol
         );
     }
+
+    public void eliminarRol(String usuario, String rol) {
+        restTemplate.delete("/usuarios/{usuario}/roles/{rol}", usuario, rol);
+    }
+
+    public void eliminar(String usuario) {
+        restTemplate.delete("/usuarios/{usuario}", usuario);
+    }
 }

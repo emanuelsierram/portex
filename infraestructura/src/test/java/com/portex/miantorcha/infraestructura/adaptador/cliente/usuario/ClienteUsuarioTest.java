@@ -57,4 +57,26 @@ class ClienteUsuarioTest {
 
         servidor.verify();
     }
+
+    @Test
+    void eliminarUsuarioEnviaPeticionDelete() {
+        servidor.expect(requestTo("http://usuarios.test/usuarios/3010000000"))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withSuccess());
+
+        clienteUsuario.eliminar("3010000000");
+
+        servidor.verify();
+    }
+
+    @Test
+    void eliminarRolEnviaPeticionDelete() {
+        servidor.expect(requestTo("http://usuarios.test/usuarios/3010000000/roles/USER"))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withSuccess());
+
+        clienteUsuario.eliminarRol("3010000000", "USER");
+
+        servidor.verify();
+    }
 }
