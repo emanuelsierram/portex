@@ -1,8 +1,8 @@
 package com.portex.miantorcha.infraestructura.controlador.miembro;
 
 import com.portex.compartido.aplicacion.ComandoRespuesta;
-import com.portex.compartido.dominio.modelo.dto.DtoUsuario;
-import com.portex.compartido.dominio.puerto.repositorio.RepositorioUsuario;
+import com.portex.miantorcha.infraestructura.adaptador.cliente.usuario.ClienteUsuario;
+import com.portex.miantorcha.infraestructura.adaptador.cliente.usuario.ComandoCrearUsuario;
 import com.portex.miantorcha.dominio.modelo.entidad.Miembro;
 import com.portex.miantorcha.dominio.modelo.fabrica.FabricaAntorcha;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
@@ -15,35 +15,30 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 public class ManejadorCrearMiembroTest {
 
     private ServicioCrearMiembro servicioCrearMiembro;
-    private RepositorioUsuario repositorioUsuario;
-    private PasswordEncoder passwordEncoder;
+    private ClienteUsuario clienteUsuario;
     private RepositorioAntorcha repositorioAntorcha;
     private ManejadorCrearMiembro manejadorCrearMiembro;
 
     private static final String TELEFONO = "3109876543";
-    private static final String PASS_CIFRADA = "pass_cifrada";
     private static final String PASS = "secreta123";
 
     @BeforeEach
     public void setup() {
         servicioCrearMiembro = Mockito.mock(ServicioCrearMiembro.class);
-        repositorioUsuario = Mockito.mock(RepositorioUsuario.class);
-        passwordEncoder = Mockito.mock(PasswordEncoder.class);
+        clienteUsuario = Mockito.mock(ClienteUsuario.class);
         repositorioAntorcha = Mockito.mock(RepositorioAntorcha.class);
 
         FabricaMiembro fabricaMiembro = new FabricaMiembro();
 
         manejadorCrearMiembro = new ManejadorCrearMiembro(
                 servicioCrearMiembro,
-                passwordEncoder,
                 fabricaMiembro,
-                repositorioUsuario,
+                clienteUsuario,
                 repositorioAntorcha,
                 new FabricaAntorcha()
                 );
@@ -54,28 +49,66 @@ public class ManejadorCrearMiembroTest {
         ComandoMiembro comando = new ComandoMiembroTestDataBuilder().build();
         String telefonoLimpio = TELEFONO;
 
-        Mockito.when(passwordEncoder.encode(comando.getContrasena())).thenReturn(PASS_CIFRADA);
         Mockito.when(servicioCrearMiembro.ejecutar(Mockito.any(Miembro.class))).thenReturn(10L);
 
         // Act
         ComandoRespuesta<Long> respuesta = manejadorCrearMiembro.ejecutar(comando);
 
         // Assert
-        Mockito.verify(passwordEncoder).encode(PASS);
+        ArgumentCaptor<ComandoCrearUsuario> captorUsuario = ArgumentCaptor.forClass(ComandoCrearUsuario.class);
+        Mockito.verify(clienteUsuario).crear(captorUsuario.capture());
+        Assertions.assertEquals(telefonoLimpio, captorUsuario.getValue().usuario());
+        Assertions.assertEquals(PASS, captorUsuario.getValue().contrasena());
 
-        ArgumentCaptor<DtoUsuario> captorUsuario = ArgumentCaptor.forClass(DtoUsuario.class);
-        Mockito.verify(repositorioUsuario).crear(captorUsuario.capture());
-        Assertions.assertEquals(telefonoLimpio, captorUsuario.getValue().getUsuario());
-        Assertions.assertEquals(PASS_CIFRADA, captorUsuario.getValue().getContrasena());
-
-        Mockito.verify(repositorioUsuario).asignarRol(telefonoLimpio, "USER");
+        Mockito.verify(clienteUsuario).asignarRol(telefonoLimpio, "USER");
 
         Mockito.verify(servicioCrearMiembro).ejecutar(Mockito.any(Miembro.class));
+        Mockito.verify(clienteUsuario, Mockito.never()).eliminar(Mockito.anyString());
         ArgumentCaptor<com.portex.miantorcha.dominio.modelo.entidad.Antorcha> captorAntorcha =
-                ArgumentCaptor.forClass(com.portex.miantorcha.dominio.modelo.entidad.Antorcha.class);
+        ArgumentCaptor.forClass(com.portex.miantorcha.dominio.modelo.entidad.Antorcha.class);
         Mockito.verify(repositorioAntorcha).crear(captorAntorcha.capture());
         Assertions.assertEquals(0, captorAntorcha.getValue().getNivel());
         Assertions.assertEquals(telefonoLimpio, captorAntorcha.getValue().getIdUsuario());
         Assertions.assertEquals(10L, respuesta.getValor());
+    }
+
+    @Test
+    public void eliminarUsuarioSiFallaLaCreacionDelMiembro() {
+        ComandoMiembro comando = new ComandoMiembroTestDataBuilder().build();
+        RuntimeException errorCreacion = new RuntimeException("El correo ya existe");
+        Mockito.when(servicioCrearMiembro.ejecutar(Mockito.any(Miembro.class)))
+                .thenThrow(errorCreacion);
+
+        RuntimeException errorLanzado = Assertions.assertThrows(
+                RuntimeException.class,
+                () -> manejadorCrearMiembro.ejecutar(comando)
+        );
+
+        Assertions.assertSame(errorCreacion, errorLanzado);
+        InOrder orden = Mockito.inOrder(clienteUsuario);
+        orden.verify(clienteUsuario).eliminarRol(TELEFONO, "USER");
+        orden.verify(clienteUsuario).eliminar(TELEFONO);
+    }
+
+    @Test
+    public void conservaErrorDeCreacionSiFallaLaEliminacionDelRol() {
+        ComandoMiembro comando = new ComandoMiembroTestDataBuilder().build();
+        RuntimeException errorCreacion = new RuntimeException("El correo ya existe");
+        RuntimeException errorEliminacion = new RuntimeException("No se pudo eliminar el rol");
+        Mockito.when(servicioCrearMiembro.ejecutar(Mockito.any(Miembro.class)))
+                .thenThrow(errorCreacion);
+        Mockito.doThrow(errorEliminacion).when(clienteUsuario).eliminarRol(TELEFONO, "USER");
+
+        RuntimeException errorLanzado = Assertions.assertThrows(
+                RuntimeException.class,
+                () -> manejadorCrearMiembro.ejecutar(comando)
+        );
+
+        Assertions.assertSame(errorCreacion, errorLanzado);
+        Assertions.assertArrayEquals(
+                new Throwable[]{errorEliminacion},
+                errorLanzado.getSuppressed()
+        );
+        Mockito.verify(clienteUsuario, Mockito.never()).eliminar(Mockito.anyString());
     }
 }

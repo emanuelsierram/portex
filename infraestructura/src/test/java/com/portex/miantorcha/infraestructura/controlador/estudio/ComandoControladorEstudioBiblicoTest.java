@@ -5,8 +5,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.portex.ApplicationMock;
 import com.portex.compartido.aplicacion.ComandoRespuesta;
 import com.portex.compartido.dominio.excepcion.ExcepcionValorObligatorio;
-import com.portex.compartido.infraestructura.seguridad.jwt.JwtTokenManager;
-import com.portex.compartido.infraestructura.seguridad.servicio.ServicioSeguridadUsuario;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ComandoControladorEstudioBiblico;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ComandoEstudioBiblico;
 import com.portex.miantorcha.infraestructura.controlador.comando.estudio.ComandoHistoricoLeccion;
@@ -75,18 +73,11 @@ public class ComandoControladorEstudioBiblicoTest {
     @MockBean
     private DaoEstudioBiblico daoEstudioBiblico;
 
-    @MockBean
-    private ServicioSeguridadUsuario servicioSeguridadUsuario;
 
     @BeforeEach
     public void setUp() {
-        JwtTokenManager jwtTokenManager = new JwtTokenManager();
-        this.tokenPrueba = jwtTokenManager.crear("admin");
-        this.tokenUsuarioPrueba = jwtTokenManager.crear("usuario-1");
-        when(servicioSeguridadUsuario.loadUserByUsername("admin"))
-                .thenReturn(User.withUsername("admin").password("password").roles("ADMIN").build());
-        when(servicioSeguridadUsuario.loadUserByUsername("usuario-1"))
-                .thenReturn(User.withUsername("usuario-1").password("password").roles("USER").build());
+        this.tokenPrueba = "token-prueba";
+        this.tokenUsuarioPrueba = "token-usuario-prueba";
     }
 
     @Test

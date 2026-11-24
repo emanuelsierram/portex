@@ -2,13 +2,12 @@ package com.portex.miantorcha.infraestructura.controlador.comando.miembro;
 
 import com.portex.compartido.aplicacion.ComandoRespuesta;
 import com.portex.compartido.aplicacion.manejador.ManejadorComandoRespuesta;
-import com.portex.compartido.dominio.modelo.dto.DtoUsuario;
-import com.portex.compartido.dominio.puerto.repositorio.RepositorioUsuario;
+import com.portex.miantorcha.infraestructura.adaptador.cliente.usuario.ClienteUsuario;
+import com.portex.miantorcha.infraestructura.adaptador.cliente.usuario.ComandoCrearUsuario;
 import com.portex.miantorcha.dominio.modelo.entidad.Miembro;
 import com.portex.miantorcha.dominio.modelo.fabrica.FabricaAntorcha;
 import com.portex.miantorcha.dominio.puerto.repositorio.RepositorioAntorcha;
 import com.portex.miantorcha.dominio.servicio.miembro.ServicioCrearMiembro;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,24 +15,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoMiembro, ComandoRespuesta<Long>> {
 
     private final ServicioCrearMiembro servicioCrearMiembro;
-    private final PasswordEncoder passwordEncoder;
     private final FabricaMiembro fabricaMiembro;
+    private final ClienteUsuario clienteUsuario;
 
-    private final RepositorioUsuario repositorioUsuario;
     private final RepositorioAntorcha repositorioAntorcha;
     private final FabricaAntorcha fabricaAntorcha;
 
 
     public ManejadorCrearMiembro(ServicioCrearMiembro servicioCrearMiembro,
-                                 PasswordEncoder passwordEncoder,
                                  FabricaMiembro fabricaMiembro,
-                                 RepositorioUsuario repositorioUsuario,
+                                 ClienteUsuario clienteUsuario,
                                  RepositorioAntorcha repositorioAntorcha,
                                  FabricaAntorcha fabricaAntorcha) {
         this.servicioCrearMiembro = servicioCrearMiembro;
-        this.passwordEncoder = passwordEncoder;
         this.fabricaMiembro = fabricaMiembro;
-        this.repositorioUsuario = repositorioUsuario;
+        this.clienteUsuario = clienteUsuario;
         this.repositorioAntorcha = repositorioAntorcha;
         this.fabricaAntorcha = fabricaAntorcha;
     }
@@ -45,16 +41,28 @@ public class ManejadorCrearMiembro implements ManejadorComandoRespuesta<ComandoM
         String telefonoLimpio = comando.getTelefono().replaceAll("[\\s-]", "");
         comando.setTelefono(telefonoLimpio);
 
-        String passCifrada = passwordEncoder.encode(comando.getContrasena());
-        DtoUsuario usuarioSeguridad = new DtoUsuario(telefonoLimpio, passCifrada, comando.getEmail(), false, false);
+        ComandoCrearUsuario usuarioSeguridad = new ComandoCrearUsuario(
+                telefonoLimpio,
+                comando.getContrasena(),
+                comando.getEmail()
+        );
 
-        this.repositorioUsuario.crear(usuarioSeguridad);
-        this.repositorioUsuario.asignarRol(telefonoLimpio, "USER");
+        this.clienteUsuario.crear(usuarioSeguridad);
 
+        try {
+            this.clienteUsuario.asignarRol(telefonoLimpio, "USER");
 
-        Miembro miembro = this.fabricaMiembro.crear(comando);
-        Long idMiembro = this.servicioCrearMiembro.ejecutar(miembro);
-        this.repositorioAntorcha.crear(fabricaAntorcha.crear(null, 0, telefonoLimpio));
-        return new ComandoRespuesta<>(idMiembro);
+            Miembro miembro = this.fabricaMiembro.crear(comando);
+            this.repositorioAntorcha.crear(fabricaAntorcha.crear(null, 0, telefonoLimpio));
+            return new ComandoRespuesta<>(this.servicioCrearMiembro.ejecutar(miembro));
+        } catch (RuntimeException errorCreacionMiembro) {
+            try {
+                this.clienteUsuario.eliminarRol(telefonoLimpio, "USER");
+                this.clienteUsuario.eliminar(telefonoLimpio);
+            } catch (RuntimeException errorEliminacionUsuario) {
+                errorCreacionMiembro.addSuppressed(errorEliminacionUsuario);
+            }
+            throw errorCreacionMiembro;
+        }
     }
 }

@@ -1,6 +1,6 @@
 package com.portex.miexperiencia.infraestructura.configuracion;
 
-import com.portex.compartido.infraestructura.seguridad.jwt.JwtCustomFilter;
+import com.portex.compartido.infraestructura.seguridad.FiltroIntrospeccionJwt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -20,10 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class ConfiguracionSeguridad{
 
-    private final JwtCustomFilter jwtCustomFilter;
+    private final FiltroIntrospeccionJwt filtroIntrospeccionJwt;
 
-    public ConfiguracionSeguridad(JwtCustomFilter jwtCustomFilter) {
-        this.jwtCustomFilter = jwtCustomFilter;
+    public ConfiguracionSeguridad(FiltroIntrospeccionJwt filtroIntrospeccionJwt) {
+        this.filtroIntrospeccionJwt = filtroIntrospeccionJwt;
     }
 
     @Bean
@@ -44,7 +44,7 @@ public class ConfiguracionSeguridad{
                             .anyRequest()
                             .authenticated();
                 })
-                .addFilterBefore(jwtCustomFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(filtroIntrospeccionJwt, UsernamePasswordAuthenticationFilter.class);
 
 
         return  httpSecurity.build();

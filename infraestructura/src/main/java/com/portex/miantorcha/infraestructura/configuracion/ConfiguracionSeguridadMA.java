@@ -1,6 +1,6 @@
 package com.portex.miantorcha.infraestructura.configuracion;
 
-import com.portex.compartido.infraestructura.seguridad.jwt.JwtCustomFilter;
+import com.portex.compartido.infraestructura.seguridad.FiltroIntrospeccionJwt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -17,10 +17,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class ConfiguracionSeguridadMA {
 
-    private final JwtCustomFilter jwtCustomFilter;
+    private final FiltroIntrospeccionJwt filtroIntrospeccionJwt;
 
-    public ConfiguracionSeguridadMA(JwtCustomFilter jwtCustomFilter) {
-        this.jwtCustomFilter = jwtCustomFilter;
+    public ConfiguracionSeguridadMA(FiltroIntrospeccionJwt filtroIntrospeccionJwt) {
+        this.filtroIntrospeccionJwt = filtroIntrospeccionJwt;
     }
 
     @Bean
@@ -46,8 +46,7 @@ public class ConfiguracionSeguridadMA {
                         .requestMatchers(HttpMethod.DELETE, "/api/estudios-biblicos/**").authenticated()
                         .anyRequest().authenticated()
                 )
-                // Reutilizamos tu filtro JWT existente
-                .addFilterBefore(jwtCustomFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(filtroIntrospeccionJwt, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
