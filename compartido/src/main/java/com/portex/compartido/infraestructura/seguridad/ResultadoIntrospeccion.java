@@ -1,4 +1,4 @@
-package com.portex.infraestructura.seguridad.autenticacion;
+package com.portex.compartido.infraestructura.seguridad;
 
 import java.util.List;
 

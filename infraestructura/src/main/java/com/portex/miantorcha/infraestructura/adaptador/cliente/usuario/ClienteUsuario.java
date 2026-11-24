@@ -11,7 +11,7 @@ public class ClienteUsuario {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public ClienteUsuario(@Value("${porta-usuarios.base-url}") String baseUrl) {
+    public ClienteUsuario(@Value("${portex-usuarios.base-url}") String baseUrl) {
         this.restTemplate = new RestTemplate();
         this.restTemplate.setUriTemplateHandler(
                 new org.springframework.web.util.DefaultUriBuilderFactory(baseUrl));
@@ -21,7 +21,7 @@ public class ClienteUsuario {
         this.restTemplate = new RestTemplate();
         this.restTemplate.setUriTemplateHandler(
                 new org.springframework.web.util.DefaultUriBuilderFactory(
-                        System.getenv().getOrDefault("PORTA_USUARIOS_BASE_URL", "")));
+                        System.getenv().getOrDefault("PORTEX_USUARIOS_BASE_URL", "")));
     }
 
     ClienteUsuario(RestTemplate restTemplate) {

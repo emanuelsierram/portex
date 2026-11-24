@@ -1,6 +1,6 @@
 package com.portex.miexperiencia.infraestructura.configuracion;
 
-import com.portex.infraestructura.seguridad.autenticacion.FiltroIntrospeccionJwt;
+import com.portex.compartido.infraestructura.seguridad.FiltroIntrospeccionJwt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

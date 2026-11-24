@@ -1,4 +1,4 @@
-package com.portex.infraestructura.seguridad.autenticacion;
+package com.portex.compartido.infraestructura.seguridad;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,8 +32,8 @@ public class FiltroIntrospeccionJwt extends org.springframework.web.filter.OnceP
 
     @Autowired
     public FiltroIntrospeccionJwt(
-            @Value("${porta-usuarios.base-url}") String baseUrl,
-            @Value("${porta-usuarios.internal-api-key}") String apiKeyInterna) {
+            @Value("${portex-usuarios.base-url}") String baseUrl,
+            @Value("${portex-usuarios.internal-api-key}") String apiKeyInterna) {
         this.restTemplate = new RestTemplate();
         this.restTemplate.setUriTemplateHandler(new DefaultUriBuilderFactory(baseUrl));
         this.apiKeyInterna = apiKeyInterna;
